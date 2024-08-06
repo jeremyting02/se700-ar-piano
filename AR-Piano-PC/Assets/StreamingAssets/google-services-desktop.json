@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "527562211646",
+    "firebase_url": "https://ar-piano-tutor-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "ar-piano-tutor",
+    "storage_bucket": "ar-piano-tutor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527562211646:android:c1bb5ad88d64b9cd806c6f",
+        "android_client_info": {
+          "package_name": "com.jeremyting.arpianopc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6LDTrB5MDD1K4U4dC7lOAc-vDL5Z2Umk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527562211646:android:5e327473a393b4b2806c6f",
+        "android_client_info": {
+          "package_name": "com.jeremyting.arpianoquest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6LDTrB5MDD1K4U4dC7lOAc-vDL5Z2Umk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
