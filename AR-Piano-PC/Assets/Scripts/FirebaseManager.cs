@@ -24,6 +24,35 @@ public class FirebaseManager : MonoBehaviour
         StartCoroutine(ReadEyeData());
     }
 
+    private void Update()
+    {
+        // Controls for use without MIDI keyboard
+        // N        for next song
+        // M        for metronome
+        // Space    for start/stop
+        // C        for calibration
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Trigger("metronome");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SetRecordTime(_pianoReciever.GetTime());
+            Trigger("start-stop");
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Trigger("calibration");
+        }
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            NextSong();
+        }
+    }
+
     public void Trigger(string trigger)
     {
         FirebaseDatabase.DefaultInstance.GetReference("trigger/" + trigger).GetValueAsync().ContinueWith(task =>
