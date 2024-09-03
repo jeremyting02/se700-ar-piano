@@ -76,7 +76,7 @@ public class PianoSlide : MonoBehaviour
 
     [SerializeField] Color _blackKeyColour = Color.blue;
     [SerializeField] float _blackKeyWidth = 0.0125f;
-    [SerializeField] float[] _blackToWhiteKeyOffsets = new float[7] { 0.013f, -1, 0.010f, 0.012f, -1, 0.009f, 0.011f };
+    [SerializeField] float[] _blackToWhiteKeyOffsets = new float[7] { 0.013f, -1, 0.010f, 0.012f, -1, 0.009f, 0.011f }; // offset after a, none after b, after c, after d, none after e, after f, after g
     [SerializeField] float _blackKeyHover = 0.0002f;
 
     [SerializeField] float _unitLength = 0.1f;
@@ -223,8 +223,10 @@ public class PianoSlide : MonoBehaviour
 
     // I need to position the line on the note(?) then rotate it towards the next note (calculation time) and scale it to the length of the note (calculation time)
 
+    // if (note % 12 == 1 || note % 12 == 4 || note % 12 == 6 || note % 12 == 9 || note % 12 == 11) { // Black key}
+
     // White X
-    // x = (note - lowestNote) * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2; (TODO sort out lowest note)
+    // x = (note - lowestNote) * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2; (TODO sort out lowest note) (lowest note is 0)
 
     // Black X
     // if (_blackToWhiteKeyOffsets[i % 7] < 0)
@@ -233,6 +235,9 @@ public class PianoSlide : MonoBehaviour
 
     //     // Calculate the x position based on the interval and index
     //     x = (note - lowestNote) * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[i % 7]; (TODO figure out how this works)
+    // 
+
+    // MIDI a = 0, 12, 24 ... 
 
     // z = (note.startBeat - (bar * beatsPerBar)) * _depth / (beatsPerBar * barsPerSlide)
 
