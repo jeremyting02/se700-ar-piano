@@ -15,15 +15,18 @@ public class PianoRoll : MonoBehaviour
         public float TotalLength { get { return _totalLength; } }
 
         Dictionary<int, List<PressInfo>> _keyPresses = new Dictionary<int, List<PressInfo>>();
-        public Dictionary<int, PressInfo[]> KeyPresses { get
+        public Dictionary<int, PressInfo[]> KeyPresses
         {
-            Dictionary<int, PressInfo[]> newInfo = new Dictionary<int, PressInfo[]>();
-            foreach (int key in _keyPresses.Keys)
+            get
             {
-                newInfo[key] = _keyPresses[key].ToArray();
+                Dictionary<int, PressInfo[]> newInfo = new Dictionary<int, PressInfo[]>();
+                foreach (int key in _keyPresses.Keys)
+                {
+                    newInfo[key] = _keyPresses[key].ToArray();
+                }
+                return newInfo;
             }
-            return newInfo;
-        } }
+        }
 
         public Song(float tempo, float totalLength)
         {
@@ -105,7 +108,7 @@ public class PianoRoll : MonoBehaviour
 
     bool _calibrationMode = false;
     [SerializeField] Color _calibrationKeyColour = Color.blue;
-    [SerializeField] int[] _calibrationKeys = new int[] { 37, 40, 42, 45};
+    [SerializeField] int[] _calibrationKeys = new int[] { 37, 40, 42, 45 };
 
 
     private void Awake()
@@ -145,7 +148,7 @@ public class PianoRoll : MonoBehaviour
                 keyColumns.Add(blackColumn);
                 blackColumn.Initialise(blackPosition, _blackKeyWidth, _depth, _unitLength, _blackKeyColour);
 
-                foreach(int calibrationKey in _calibrationKeys)
+                foreach (int calibrationKey in _calibrationKeys)
                 {
                     if (calibrationKey == keyColumns.Count - 1)
                     {
@@ -247,7 +250,7 @@ public class PianoRoll : MonoBehaviour
     {
         _calibrationMode = !_calibrationMode;
 
-        foreach(KeyColumn keyColumn in _keyColumns)
+        foreach (KeyColumn keyColumn in _keyColumns)
         {
             keyColumn.EnableCalibration(_calibrationMode);
         }
@@ -260,9 +263,9 @@ public class PianoRoll : MonoBehaviour
 
     void LoadSong()
     {
-        foreach(int key in GetSong().KeyPresses.Keys)
+        foreach (int key in GetSong().KeyPresses.Keys)
         {
-            foreach(Song.PressInfo pressInfo in GetSong().KeyPresses[key])
+            foreach (Song.PressInfo pressInfo in GetSong().KeyPresses[key])
             {
                 _keyColumns[key].InputNote(pressInfo.Start, pressInfo.Length);
             }
@@ -293,6 +296,7 @@ public class PianoRoll : MonoBehaviour
     {
         Song newSong = new Song(tempo, 56);
 
+        // note, time offset, time 1, length 1, time 2, length 2, ...
         newSong.InputNotes(39, 0, 0, 1, 8, 1);
         newSong.InputNotes(41, 0, 1, 1, 7, 1);
         newSong.InputNotes(43, 0, 2, 1, 6, 1);
@@ -394,7 +398,7 @@ public class PianoRoll : MonoBehaviour
 
         _songs.Add(newSong);
     }
-    
+
     void AlleMeineEntchen(float tempo)
     {
         Song newSong = new Song(tempo, 64);
