@@ -117,7 +117,7 @@ public class BeatBar : MonoBehaviour
     {
         _metronomeMode = metronomeMode;
 
-        foreach(Bar bar in _barsShowing)
+        foreach (Bar bar in _barsShowing)
         {
             bar.NewMetronomeMode(metronomeMode);
         }
@@ -125,14 +125,14 @@ public class BeatBar : MonoBehaviour
 
     public void DoReset(float time)
     {
-        foreach(Bar bar in _barsToShow) bar.DestroyVisual();
-        foreach(Bar bar in _barsShowing) bar.DestroyVisual();
+        foreach (Bar bar in _barsToShow) bar.DestroyVisual();
+        foreach (Bar bar in _barsShowing) bar.DestroyVisual();
 
         _barsToShow.Clear();
         _barsShowing.Clear();
 
         _maxBarCount = (int)(_depth / _unitLength);
-        for (int i = -_maxBarCount; i < 0; i++) 
+        for (int i = -_maxBarCount; i < 0; i++)
         {
             _barsToShow.Add(new Bar(i, _barLength));
         }
@@ -140,4 +140,4 @@ public class BeatBar : MonoBehaviour
         Elapse(time);
         SetMetronomeMode(_metronomeMode);
     }
-} 
+}
