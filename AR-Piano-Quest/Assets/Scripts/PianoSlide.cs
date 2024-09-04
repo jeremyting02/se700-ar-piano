@@ -1,10 +1,43 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq; // For using the OrderBy method
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class PianoSlide : MonoBehaviour
 {
+
+    class Note
+    {
+        public float startBeat;   // The beat at which the note starts
+        public int note;          // The MIDI note value
+        public bool disconnect;   // Whether the note disconnects from the previous note
+
+        public Note(float startBeat, int note, bool disconnect)
+        {
+            this.startBeat = startBeat;
+            this.note = note;
+            this.disconnect = disconnect;
+        }
+    }
+
+    class NoteDisplay
+    {
+        public float x;
+        public float z;
+        public float length;
+        public float angle;
+
+        public NoteDisplay(float x, float z, float length, float angle)
+        {
+            this.x = x;
+            this.z = z;
+            this.length = length;
+            this.angle = angle;
+        }
+    }
+
     class Song
     {
         float _bpm;
@@ -15,7 +48,7 @@ public class PianoSlide : MonoBehaviour
         int beatsPerBar = 4;
         int barsPerSlide = 2;
 
-        public List<Note> notes;
+        public List<Note> notes = new List<Note>();
 
         public Song(float bpm, float totalLength)
         {
@@ -43,20 +76,6 @@ public class PianoSlide : MonoBehaviour
             }
             notes = notes.OrderBy(n => n.startBeat).ToList();
         }
-
-        public struct Note
-        {
-            public float startBeat;   // The beat at which the note starts
-            public int note;          // The MIDI note value
-            public bool disconnect;   // Whether the note disconnects from the previous note
-
-            public Note(float startBeat, int note, bool disconnect)
-            {
-                this.startBeat = startBeat;
-                this.note = note;
-                this.disconnect = disconnect;
-            }
-        }
     }
     List<Song> _songs = new List<Song>();
 
@@ -67,6 +86,9 @@ public class PianoSlide : MonoBehaviour
     [SerializeField] GameObject _gridWhiteLineExample;
     [SerializeField] GameObject _gridBlackLineExample;
     [SerializeField] GameObject _gridBeatLineExample;
+
+    [SerializeField] Transform _noteLineParent;
+    [SerializeField] GameObject _noteLineExample;
 
     [SerializeField] Color _whiteKeyColour = Color.white;
     [SerializeField] float _whiteKeyWidth = 0.022f;
@@ -105,6 +127,8 @@ public class PianoSlide : MonoBehaviour
         _background.GetComponent<Renderer>().material.mainTextureScale = new Vector2(_whiteKeyCount, 1);
 
         CreateGridLines();
+
+        DrawNoteLines(_songs[0], 0);
     }
 
     void CreateGridLines()
@@ -183,43 +207,80 @@ public class PianoSlide : MonoBehaviour
         }
     }
 
-    // void DrawNoteLines(Song song, int bar)
-    // {
-    //     // Loop through each note in the song
-    //     for (int i = 0; i < song.Notes.Count - 1; i++)
-    //     {
-    //         Note currentNote = song.Notes[i];
-    //         Note nextNote = song.Notes[i + 1];
+    void DrawNoteLines(Song song, int bar)
+    {
+        // Loop through each note in the song
+        for (int i = 0; i < song.notes.Count - 1; i++)
+        {
+            Note currentNote = song.notes[i];
+            Note nextNote = song.notes[i + 1];
 
-    //         // Calculate positions for the current and next notes
-    //         Vector3 currentPosition = CalculateNotePosition(currentNote);
-    //         Vector3 nextPosition = CalculateNotePosition(nextNote);
+            // Calculate positions for the current and next notes
+            NoteDisplay noteDisplay = CalculateNoteDisplay(currentNote, nextNote);
 
-    //         // Create a new line between the current and next note
-    //         GameObject line = new GameObject("NoteLine_" + i);
-    //         line.transform.parent = _gridLineParent;
-    //         LineRenderer lineRenderer = line.AddComponent<LineRenderer>();
-    //         lineRenderer.startWidth = 0.002f;  // Adjust line width as needed
-    //         lineRenderer.endWidth = 0.002f;
-    //         lineRenderer.positionCount = 2;
-    //         lineRenderer.SetPosition(0, currentPosition);
-    //         lineRenderer.SetPosition(1, nextPosition);
-    //         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-    //         lineRenderer.startColor = Color.red;  // You can customize colors as needed
-    //         lineRenderer.endColor = Color.red;
-    //     }
-    // }
+            // Create a new line between the current and next note
+            // Instantiate a clone of the example visual
+            GameObject clone = Instantiate(_noteLineExample, _noteLineParent);
 
-    // Vector3 CalculateNotePosition(Note note)
-    // {
-    //     // Map MIDI note to x-position
-    //     float xPos = (note.Midi - 39) * (_whiteKeyWidth + _whiteKeySpacing);  // 39 is middle C
-    //     // Calculate the z-position based on the timing
-    //     float zPos = note.Time * (_depth / song.TotalTime);
+            // Enable the clone (in case the example is disabled)
+            clone.SetActive(true);
 
-    //     // Return the position (y is the height, which we keep constant)
-    //     return new Vector3(xPos, _barHover, zPos);
-    // }
+            // Set the position of the clone
+            clone.transform.localPosition = new Vector3(noteDisplay.x, _barHover * 2, noteDisplay.z);
+
+            // Set the scale of the clone
+            clone.transform.localScale = new Vector3(_whiteKeyWidth / 5, 1, noteDisplay.length);
+
+            // Set the rotation of the clone
+            clone.transform.rotation = Quaternion.Euler(0, noteDisplay.angle, 0);
+        }
+    }
+
+    NoteDisplay CalculateNoteDisplay(Note currentNote, Note nextNote)
+    {
+        float x, z, nextx, nextz, length, angle;
+        int noteNote = currentNote.note, nextNoteNote = nextNote.note, keyNote;
+
+        // note x
+        float calcNote = (float)noteNote / 12 * 7;
+        if (noteNote % 12 == 1 || noteNote % 12 == 4 || noteNote % 12 == 6 || noteNote % 12 == 9 || noteNote % 12 == 11)
+        { // if black key
+            keyNote = Convert.ToInt32(Math.Floor(calcNote));
+            x = keyNote * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[keyNote % 7];
+        }
+        else
+        { // if white key
+            keyNote = Convert.ToInt32(Math.Round(calcNote));
+            x = keyNote * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2;
+        }
+
+        // z
+        z = (currentNote.startBeat - (/*bar*/ 0 * beatsPerBar)) * _depth / (beatsPerBar * barsPerSlide);
+
+        // note x
+        calcNote = (float)nextNoteNote / 12 * 7;
+        if (nextNoteNote % 12 == 1 || nextNoteNote % 12 == 4 || nextNoteNote % 12 == 6 || nextNoteNote % 12 == 9 || nextNoteNote % 12 == 11)
+        { // if black key
+            keyNote = Convert.ToInt32(Math.Floor(calcNote));
+            nextx = keyNote * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[keyNote % 7];
+        }
+        else
+        { // if white key
+            keyNote = Convert.ToInt32(Math.Round(calcNote));
+            nextx = keyNote * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2;
+        }
+
+        // z
+        nextz = (nextNote.startBeat - (/*bar*/ 0 * beatsPerBar)) * _depth / (beatsPerBar * barsPerSlide);
+
+        // length
+        length = Mathf.Sqrt(Mathf.Pow(nextx - x, 2) + Mathf.Pow(nextz - z, 2));
+
+        // angle
+        angle = Mathf.Atan2(nextx - x, nextz - z) * Mathf.Rad2Deg;
+
+        return new NoteDisplay((nextx + x) / 2, (nextz + z) / 2, length, angle);
+    }
 
     // I need to position the line on the note(?) then rotate it towards the next note (calculation time) and scale it to the length of the note (calculation time)
 
