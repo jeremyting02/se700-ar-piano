@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq; // For using the OrderBy method
 using UnityEngine;
 using UnityEngine.Assertions.Must;
+using UnityEngine.TextCore.Text;
 
 public class PianoSlide : MonoBehaviour
 {
@@ -108,6 +109,19 @@ public class PianoSlide : MonoBehaviour
     [SerializeField] BeatBar _beatBar;
     [SerializeField] float _barHover = 0.0003f;
 
+    Color _colorA = new Color(0.5f, 0, 1);
+    Color _colorA1 = new Color(0.25f, 0, 0.5f);
+    Color _colorB = new Color(1, 0, 1);
+    Color _colorC = new Color(1, 0, 0);
+    Color _colorC1 = new Color(0.5f, 0, 0);
+    Color _colorD = new Color(1, 0.5f, 0);
+    Color _colorD1 = new Color(0.5f, 0.25f, 0);
+    Color _colorE = new Color(1, 1, 0);
+    Color _colorF = new Color(0, 1, 0);
+    Color _colorF1 = new Color(0, 0.5f, 0);
+    Color _colorG = new Color(0, 1, 1);
+    Color _colorG1 = new Color(0, 0.25f, 1);
+
     int beatsPerBar = 4;
     int barsPerSlide = 2;
 
@@ -152,8 +166,55 @@ public class PianoSlide : MonoBehaviour
             clone.transform.localScale = new Vector3(_whiteKeyWidth / 10, 1, _depth);
         }
 
-        // Black Lines
+        // Colours on white lines
         for (int i = 0; i < _whiteKeyCount; i++)
+        {
+            // Instantiate a clone of the example visual
+            GameObject clone = Instantiate(_noteLineExample, _gridLineParent);
+
+            // Enable the clone (in case the example is disabled)
+            clone.SetActive(true);
+
+            // Calculate the x position based on the interval and index
+            float xPos = i * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2;
+
+            // Set the position of the clone
+            clone.transform.localPosition = new Vector3(xPos, _barHover, -0.015f);
+
+            // Set the scale of the clone
+            clone.transform.localScale = new Vector3(_whiteKeyWidth, 1, _whiteKeyWidth / 2);
+
+            switch (i % 7)
+            {
+                case 0:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorA;
+                    break;
+                case 1:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorB;
+                    break;
+                case 2:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorC;
+                    break;
+                case 3:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorD;
+                    break;
+                case 4:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorE;
+                    break;
+                case 5:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorF;
+                    break;
+                case 6:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorG;
+                    break;
+                default:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
+                    break;
+            }
+        }
+
+        // Black Lines
+        for (int i = 0; i < _whiteKeyCount - 1; i++)
         {
             if (_blackToWhiteKeyOffsets[i % 7] < 0)
                 continue;
@@ -172,6 +233,50 @@ public class PianoSlide : MonoBehaviour
 
             // Set the scale of the clone
             clone.transform.localScale = new Vector3(_blackKeyWidth / 10, 1, _depth);
+        }
+
+        // Colours on black lines
+        for (int i = 0; i < _whiteKeyCount - 1; i++)
+        {
+            if (_blackToWhiteKeyOffsets[i % 7] < 0)
+                continue;
+
+            // Instantiate a clone of the example visual
+            GameObject clone = Instantiate(_noteLineExample, _gridLineParent);
+
+            // Enable the clone (in case the example is disabled)
+            clone.SetActive(true);
+
+            // Calculate the x position based on the interval and index
+            float xPos = i * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[i % 7];
+
+            // Set the position of the clone
+            clone.transform.localPosition = new Vector3(xPos, _barHover, -0.005f);
+
+            // Set the scale of the clone
+            clone.transform.localScale = new Vector3(_whiteKeyWidth / 2, 1, _whiteKeyWidth / 2);
+
+            switch (i % 7)
+            {
+                case 0:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorA1;
+                    break;
+                case 2:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorC1;
+                    break;
+                case 3:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorD1;
+                    break;
+                case 5:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorF1;
+                    break;
+                case 6:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorG1;
+                    break;
+                default:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
+                    break;
+            }
         }
 
         // Beat Lines
