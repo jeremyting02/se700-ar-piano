@@ -2650,7 +2650,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pianoRoll: {fileID: 889373893}
-  _pianoSlide: {fileID: 1171915866}
+  _pianoRollObject: {fileID: 889373891}
+  _pianoSlideObject: {fileID: 1171915863}
   _calibration: {fileID: 889373892}
 --- !u!4 &2070354650
 Transform:
