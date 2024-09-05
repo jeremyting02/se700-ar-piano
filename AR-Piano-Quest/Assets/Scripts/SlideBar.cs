@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeatBar : MonoBehaviour
+public class SlideBar : MonoBehaviour
 {
     int _maxBarCount;
     float _depth;
@@ -42,12 +42,14 @@ public class BeatBar : MonoBehaviour
 
         public bool MoveUntilGone(float time, float depth, float beatLength, int maxBarCount)
         {
-            float visualStart = Mathf.Max(0, (_startTime - time) * beatLength);
-            float visualEnd = Mathf.Min(depth, ((_startTime - time) * beatLength) + _length);
+            // Update: Now we use (_startTime + time) to make the bars move forwards
+            float visualStart = Mathf.Max(0, (_startTime + time) * beatLength);
+            float visualEnd = Mathf.Min(depth, ((_startTime + time) * beatLength) + _length);
             float visualLength = Mathf.Max(visualEnd - visualStart, 0);
 
             if (visualLength > 0)
             {
+                // Set the new position and scale based on forward movement
                 _visual.transform.localPosition = new Vector3(0, 0, Mathf.Lerp(visualStart, visualEnd, 0.5f));
                 _visual.transform.localScale = new Vector3(1, 1, visualLength);
 
@@ -56,7 +58,7 @@ public class BeatBar : MonoBehaviour
             else
             {
                 Destroy(_visual);
-                _startTime += maxBarCount;
+                _startTime -= maxBarCount;  // Move start time backwards when the bar goes off the screen
                 return false;
             }
         }

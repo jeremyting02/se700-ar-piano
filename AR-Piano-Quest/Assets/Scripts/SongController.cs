@@ -17,6 +17,7 @@ public class SongController : MonoBehaviour
     [SerializeField] int _metronomePerBeat = 1;
     [SerializeField] float _metronomeOffset = -0.2f;
     [SerializeField] PianoRoll _pianoRoll;
+    [SerializeField] PianoSlide _pianoSlide;
 
     public static List<Song> _songs = new List<Song>();
 
@@ -113,7 +114,7 @@ public class SongController : MonoBehaviour
         GenerateSongs();
 
         // Setup time
-        _time = -8; // -_depth / _unitLength; 8 beats?
+        _time = -8; // -_depth / _beatLength; 8 beats?
         _last_tick_time = (int)_time - 0.2f;
 
         // Setup metronome
@@ -160,6 +161,7 @@ public class SongController : MonoBehaviour
         _paused = true;
 
         _pianoRoll.DoReset();
+        _pianoSlide.DoReset();
     }
 
     public void TogglePause()

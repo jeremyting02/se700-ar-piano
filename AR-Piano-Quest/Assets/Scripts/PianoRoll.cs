@@ -23,11 +23,11 @@ public class PianoRoll : MonoBehaviour
     [SerializeField] GameObject _keyColumnExample;
     KeyColumn[] _keyColumns;
 
-    [SerializeField] float _unitLength = 0.1f;
+    [SerializeField] float _beatLength = 0.1f;
 
 
     [SerializeField] BeatBar _beatBar;
-    [SerializeField] float _barLength = 0.001f;
+    [SerializeField] float _barThickness = 0.001f;
     [SerializeField] float _barHover = 0.0003f;
 
     static bool _calibrationMode = false;
@@ -59,7 +59,7 @@ public class PianoRoll : MonoBehaviour
             KeyColumn whiteColumn = Instantiate(_keyColumnExample, _keyColumnsParent).GetComponent<KeyColumn>();
             keyColumns.Add(whiteColumn);
             last_white_index = keyColumns.Count - 1;
-            whiteColumn.Initialise(whitePosition, _whiteKeyWidth, _depth, _unitLength, _whiteKeyColour);
+            whiteColumn.Initialise(whitePosition, _whiteKeyWidth, _depth, _beatLength, _whiteKeyColour);
 
             // White key has neighbouring black key to its right
             if (i < _whiteKeyCount - 1 && _blackToWhiteKeyOffsets[i % 7] >= 0)
@@ -67,7 +67,7 @@ public class PianoRoll : MonoBehaviour
                 Vector3 blackPosition = new Vector3(keyColumns[last_white_index].transform.localPosition.x + _blackToWhiteKeyOffsets[i % 7], _blackKeyHover, 0);
                 KeyColumn blackColumn = Instantiate(_keyColumnExample, _keyColumnsParent).GetComponent<KeyColumn>();
                 keyColumns.Add(blackColumn);
-                blackColumn.Initialise(blackPosition, _blackKeyWidth, _depth, _unitLength, _blackKeyColour);
+                blackColumn.Initialise(blackPosition, _blackKeyWidth, _depth, _beatLength, _blackKeyColour);
 
                 foreach (int calibrationKey in _calibrationKeys)
                 {
@@ -80,9 +80,8 @@ public class PianoRoll : MonoBehaviour
         }
         _keyColumns = keyColumns.ToArray();
 
-
         // Initialse beat bars
-        _beatBar.Initialise(SongController._time, width, _depth, _unitLength, _barLength, _barHover);
+        _beatBar.Initialise(SongController._time, width, _depth, _beatLength, _barThickness, _barHover);
 
         // Load song into key columns
         LoadSong();

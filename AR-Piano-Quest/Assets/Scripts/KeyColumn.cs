@@ -6,7 +6,7 @@ using System;
 public class KeyColumn : MonoBehaviour
 {
     float _depth;
-    float _unitLength;
+    float _beatLength;
 
     [SerializeField] GameObject _exampleVisual;
 
@@ -22,7 +22,7 @@ public class KeyColumn : MonoBehaviour
 
         GameObject _visual;
 
-        public Note (float startTime, float length)
+        public Note(float startTime, float length)
         {
             _startTime = startTime;
             _length = length;
@@ -34,10 +34,10 @@ public class KeyColumn : MonoBehaviour
             _visual.SetActive(true);
         }
 
-        public bool MoveUntilGone(float time, float depth, float unitLength)
+        public bool MoveUntilGone(float time, float depth, float beatLength)
         {
-            float visualStart = Mathf.Max(0, (_startTime - time) * unitLength);
-            float visualEnd = Mathf.Min(depth, (_startTime + _length - time) * unitLength);
+            float visualStart = Mathf.Max(0, (_startTime - time) * beatLength);
+            float visualEnd = Mathf.Min(depth, (_startTime + _length - time) * beatLength);
             float visualLength = Mathf.Max(visualEnd - visualStart, 0);
 
             if (visualLength > 0)
@@ -63,13 +63,13 @@ public class KeyColumn : MonoBehaviour
     List<Note> _notesShowing = new List<Note>();
     List<Note> _notesShown = new List<Note>();
 
-    public void Initialise(Vector3 localPosition, float width, float depth, float unitLength, Color colour)
+    public void Initialise(Vector3 localPosition, float width, float depth, float beatLength, Color colour)
     {
         transform.localPosition = localPosition;
         transform.localScale = new Vector3(width, 1, 1);
         _depth = depth;
-        _unitLength = unitLength;
-        foreach(MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>(true)) renderer.material.color = colour;
+        _beatLength = beatLength;
+        foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>(true)) renderer.material.color = colour;
 
         gameObject.SetActive(true);
     }
@@ -93,7 +93,7 @@ public class KeyColumn : MonoBehaviour
     public void Elapse(float time)
     {
         // Check to show next note on the back of the piano roll
-        while (_notesToShow.Count > 0 && _notesToShow[0].StartTime * _unitLength < (time * _unitLength) + _depth)
+        while (_notesToShow.Count > 0 && _notesToShow[0].StartTime * _beatLength < (time * _beatLength) + _depth)
         {
             Note showNote = _notesToShow[0];
             _notesShowing.Add(showNote);
@@ -106,7 +106,7 @@ public class KeyColumn : MonoBehaviour
         int i = 0;
         while (i < _notesShowing.Count)
         {
-            bool gone = !_notesShowing[i].MoveUntilGone(time, _depth, _unitLength);
+            bool gone = !_notesShowing[i].MoveUntilGone(time, _depth, _beatLength);
 
             if (gone)
             {

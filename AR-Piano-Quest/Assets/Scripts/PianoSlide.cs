@@ -44,22 +44,17 @@ public class PianoSlide : MonoBehaviour
     [SerializeField] Transform _noteLineParent;
     [SerializeField] GameObject _noteLineExample;
 
-    [SerializeField] Color _whiteKeyColour = Color.white;
     [SerializeField] float _whiteKeyWidth = 0.022f;
     [SerializeField] float _whiteKeySpacing = 0.0015f;
     [SerializeField] int _whiteKeyCount = 52;
     [SerializeField] float _whiteKeyHover = 0.0001f;
 
-    [SerializeField] Color _blackKeyColour = Color.blue;
     [SerializeField] float _blackKeyWidth = 0.0125f;
     [SerializeField] float[] _blackToWhiteKeyOffsets = new float[7] { 0.013f, -1, 0.010f, 0.012f, -1, 0.009f, 0.011f }; // offset after a, none after b, after c, after d, none after e, after f, after g
     [SerializeField] float _blackKeyHover = 0.0002f;
 
-    [SerializeField] float _unitLength = 0.1f;
-    [SerializeField] int _metronomePerBeat = 1;
-    [SerializeField] float _metronomeOffset = -0.2f;
-
-    [SerializeField] BeatBar _beatBar;
+    [SerializeField] SlideBar _slideBar;
+    [SerializeField] float _barThickness = 0.001f;
     [SerializeField] float _barHover = 0.0003f;
 
     Color _colorA = new Color(0.5f, 0, 1);
@@ -78,21 +73,37 @@ public class PianoSlide : MonoBehaviour
     int beatsPerBar = 4;
     int barsPerSlide = 2;
 
-    float width;
+    float _beatLength = 0.1f;
+
+    float _backgroundWidth;
 
     private void Awake()
     {
         // Calculate total width
-        width = _whiteKeyWidth * _whiteKeyCount + _whiteKeySpacing * (_whiteKeyCount - 1);
+        _backgroundWidth = _whiteKeyWidth * _whiteKeyCount + _whiteKeySpacing * (_whiteKeyCount - 1);
+        _beatLength = _depth / (beatsPerBar * barsPerSlide);
 
         // Set background size, position and material
-        _background.localScale = new Vector3(width, _depth, 1);
+        _background.localScale = new Vector3(_backgroundWidth, _depth, 1);
         _background.localPosition += new Vector3(0, 0, _depth / 2);
         _background.GetComponent<Renderer>().material.mainTextureScale = new Vector2(_whiteKeyCount, 1);
 
         CreateGridLines();
 
+        // Initialse slide bar
+        _slideBar.Initialise(SongController._time, _backgroundWidth, _depth, _beatLength, _barThickness, _barHover);
+
         // DrawNoteLines(_songs[0], 0);
+    }
+
+    private void Update()
+    {
+        // Elapse time
+        if (!SongController._paused)
+        {
+            _slideBar.Elapse(SongController._time);
+        }
+
     }
 
     void CreateGridLines()
@@ -107,7 +118,7 @@ public class PianoSlide : MonoBehaviour
             clone.SetActive(true);
 
             // Calculate the x position based on the interval and index
-            float xPos = i * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2;
+            float xPos = i * (_whiteKeyWidth + _whiteKeySpacing) - _backgroundWidth / 2 + _whiteKeyWidth / 2;
 
             // Set the position of the clone
             clone.transform.localPosition = new Vector3(xPos, _barHover, _depth / 2);
@@ -126,7 +137,7 @@ public class PianoSlide : MonoBehaviour
             clone.SetActive(true);
 
             // Calculate the x position based on the interval and index
-            float xPos = i * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2;
+            float xPos = i * (_whiteKeyWidth + _whiteKeySpacing) - _backgroundWidth / 2 + _whiteKeyWidth / 2;
 
             // Set the position of the clone
             clone.transform.localPosition = new Vector3(xPos, _barHover, -0.015f);
@@ -176,7 +187,7 @@ public class PianoSlide : MonoBehaviour
             clone.SetActive(true);
 
             // Calculate the x position based on the interval and index
-            float xPos = i * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[i % 7];
+            float xPos = i * (_whiteKeyWidth + _whiteKeySpacing) - _backgroundWidth / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[i % 7];
 
             // Set the position of the clone
             clone.transform.localPosition = new Vector3(xPos, _barHover, _depth / 2);
@@ -198,7 +209,7 @@ public class PianoSlide : MonoBehaviour
             clone.SetActive(true);
 
             // Calculate the x position based on the interval and index
-            float xPos = i * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[i % 7];
+            float xPos = i * (_whiteKeyWidth + _whiteKeySpacing) - _backgroundWidth / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[i % 7];
 
             // Set the position of the clone
             clone.transform.localPosition = new Vector3(xPos, _barHover, -0.005f);
@@ -242,7 +253,7 @@ public class PianoSlide : MonoBehaviour
             clone.transform.localPosition = new Vector3(0, _barHover * 2, _depth * i / (beatsPerBar * barsPerSlide));
 
             // Set the scale of the clone
-            clone.transform.localScale = new Vector3(width, 1, _whiteKeyWidth / 10);
+            clone.transform.localScale = new Vector3(_backgroundWidth, 1, _whiteKeyWidth / 10);
         }
 
         // Bar Lines
@@ -258,7 +269,7 @@ public class PianoSlide : MonoBehaviour
             clone.transform.localPosition = new Vector3(0, _barHover * 2, _depth * i / barsPerSlide);
 
             // Set the scale of the clone
-            clone.transform.localScale = new Vector3(width, 1, _whiteKeyWidth / 5);
+            clone.transform.localScale = new Vector3(_backgroundWidth, 1, _whiteKeyWidth / 5);
         }
     }
 
@@ -344,12 +355,12 @@ public class PianoSlide : MonoBehaviour
         if (noteNote % 12 == 1 || noteNote % 12 == 4 || noteNote % 12 == 6 || noteNote % 12 == 9 || noteNote % 12 == 11)
         { // if black key
             keyNote = Convert.ToInt32(Math.Floor(calcNote));
-            x = keyNote * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[keyNote % 7];
+            x = keyNote * (_whiteKeyWidth + _whiteKeySpacing) - _backgroundWidth / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[keyNote % 7];
         }
         else
         { // if white key
             keyNote = Convert.ToInt32(Math.Round(calcNote));
-            x = keyNote * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2;
+            x = keyNote * (_whiteKeyWidth + _whiteKeySpacing) - _backgroundWidth / 2 + _whiteKeyWidth / 2;
         }
 
         // z
@@ -360,12 +371,12 @@ public class PianoSlide : MonoBehaviour
         if (nextNoteNote % 12 == 1 || nextNoteNote % 12 == 4 || nextNoteNote % 12 == 6 || nextNoteNote % 12 == 9 || nextNoteNote % 12 == 11)
         { // if black key
             keyNote = Convert.ToInt32(Math.Floor(calcNote));
-            nextx = keyNote * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[keyNote % 7];
+            nextx = keyNote * (_whiteKeyWidth + _whiteKeySpacing) - _backgroundWidth / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[keyNote % 7];
         }
         else
         { // if white key
             keyNote = Convert.ToInt32(Math.Round(calcNote));
-            nextx = keyNote * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2;
+            nextx = keyNote * (_whiteKeyWidth + _whiteKeySpacing) - _backgroundWidth / 2 + _whiteKeyWidth / 2;
         }
 
         // z
@@ -378,6 +389,11 @@ public class PianoSlide : MonoBehaviour
         angle = Mathf.Atan2(nextx - x, nextz - z) * Mathf.Rad2Deg;
 
         return new NoteDisplay((nextx + x) / 2, (nextz + z) / 2, x, z, length, angle);
+    }
+
+    public void DoReset()
+    {
+
     }
 
 }
