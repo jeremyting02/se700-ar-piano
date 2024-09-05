@@ -9,76 +9,29 @@ using UnityEngine.TextCore.Text;
 public class PianoSlide : MonoBehaviour
 {
 
-    class Note
-    {
-        public float startBeat;   // The beat at which the note starts
-        public int note;          // The MIDI note value
-        public bool disconnect;   // Whether the note disconnects from the previous note
-
-        public Note(float startBeat, int note, bool disconnect)
-        {
-            this.startBeat = startBeat;
-            this.note = note;
-            this.disconnect = disconnect;
-        }
-    }
 
     class NoteDisplay
     {
-        public float x;
-        public float z;
+        public float centreX;
+        public float centreZ;
+        public float startX;
+        public float startZ;
         public float length;
         public float angle;
 
-        public NoteDisplay(float x, float z, float length, float angle)
+        public NoteDisplay(float centreX, float centreZ, float startX, float startZ, float length, float angle)
         {
-            this.x = x;
-            this.z = z;
+            this.centreX = centreX;
+            this.centreZ = centreZ;
+            this.startX = startX;
+            this.startZ = startZ;
             this.length = length;
             this.angle = angle;
         }
     }
 
-    class Song
-    {
-        float _bpm;
-        public float getBPM { get { return _bpm; } }
-        float _nBeats; // nBeats
-        public float getBeats { get { return _nBeats; } }
 
-        int beatsPerBar = 4;
-        int barsPerSlide = 2;
-
-        public List<Note> notes = new List<Note>();
-
-        public Song(float bpm, float totalLength)
-        {
-            _bpm = bpm;
-            _nBeats = totalLength;
-        }
-
-        public void InputNotes(string note, float timeOffset, params float[] info)
-        {
-            List<string> keys = new List<string>() { "a", "a#", "b", "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#" };
-            InputNotes(keys.IndexOf(note) + 36, timeOffset, info);
-        }
-
-        public void InputNotes(int octaveOffset, string note, float timeOffset, params float[] info)
-        {
-            List<string> keys = new List<string>() { "a", "a#", "b", "c", "c#", "d", "d#", "e", "f", "f#", "g", "g#" };
-            InputNotes(keys.IndexOf(note) + 36 + (12 * octaveOffset), timeOffset, info);
-        }
-
-        public void InputNotes(int note, float timeOffset, params float[] info)
-        {
-            for (int i = 0; i < info.Length; i += 2)
-            {
-                notes.Add(new Note(info[i] + timeOffset, note, false));
-            }
-            notes = notes.OrderBy(n => n.startBeat).ToList();
-        }
-    }
-    List<Song> _songs = new List<Song>();
+    List<SongController.Song> _songs = new List<SongController.Song>();
 
     float _depth = 0.2f; // aka length
 
@@ -129,9 +82,6 @@ public class PianoSlide : MonoBehaviour
 
     private void Awake()
     {
-        // Generate song info
-        GenerateSongs();
-
         // Calculate total width
         width = _whiteKeyWidth * _whiteKeyCount + _whiteKeySpacing * (_whiteKeyCount - 1);
 
@@ -142,7 +92,7 @@ public class PianoSlide : MonoBehaviour
 
         CreateGridLines();
 
-        DrawNoteLines(_songs[0], 0);
+        // DrawNoteLines(_songs[0], 0);
     }
 
     void CreateGridLines()
@@ -312,13 +262,13 @@ public class PianoSlide : MonoBehaviour
         }
     }
 
-    void DrawNoteLines(Song song, int bar)
+    void DrawNoteLines(SongController.Song song, int bar)
     {
         // Loop through each note in the song
-        for (int i = 0; i < song.notes.Count - 1; i++)
+        for (int i = 0; i < song._slideInfo.Count - 1; i++)
         {
-            Note currentNote = song.notes[i];
-            Note nextNote = song.notes[i + 1];
+            SongController.Song.SlideNote currentNote = song._slideInfo[i];
+            SongController.Song.SlideNote nextNote = song._slideInfo[i + 1];
 
             // Calculate positions for the current and next notes
             NoteDisplay noteDisplay = CalculateNoteDisplay(currentNote, nextNote);
@@ -331,7 +281,7 @@ public class PianoSlide : MonoBehaviour
             clone.SetActive(true);
 
             // Set the position of the clone
-            clone.transform.localPosition = new Vector3(noteDisplay.x, _barHover * 2, noteDisplay.z);
+            clone.transform.localPosition = new Vector3(noteDisplay.centreX, _barHover * 2, noteDisplay.centreZ);
 
             // Set the scale of the clone
             clone.transform.localScale = new Vector3(_whiteKeyWidth / 5, 1, noteDisplay.length);
@@ -384,7 +334,7 @@ public class PianoSlide : MonoBehaviour
         }
     }
 
-    NoteDisplay CalculateNoteDisplay(Note currentNote, Note nextNote)
+    NoteDisplay CalculateNoteDisplay(SongController.Song.SlideNote currentNote, SongController.Song.SlideNote nextNote)
     {
         float x, z, nextx, nextz, length, angle;
         int noteNote = currentNote.note, nextNoteNote = nextNote.note, keyNote;
@@ -427,72 +377,7 @@ public class PianoSlide : MonoBehaviour
         // angle
         angle = Mathf.Atan2(nextx - x, nextz - z) * Mathf.Rad2Deg;
 
-        return new NoteDisplay((nextx + x) / 2, (nextz + z) / 2, length, angle);
+        return new NoteDisplay((nextx + x) / 2, (nextz + z) / 2, x, z, length, angle);
     }
 
-    // I need to position the line on the note(?) then rotate it towards the next note (calculation time) and scale it to the length of the note (calculation time)
-
-    // if (note % 12 == 1 || note % 12 == 4 || note % 12 == 6 || note % 12 == 9 || note % 12 == 11) { // Black key}
-
-    // White X
-    // x = (note - lowestNote) * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2; (TODO sort out lowest note) (lowest note is 0)
-
-    // Black X
-    // if (_blackToWhiteKeyOffsets[i % 7] < 0)
-    //         continue;
-
-
-    //     // Calculate the x position based on the interval and index
-    //     x = (note - lowestNote) * (_whiteKeyWidth + _whiteKeySpacing) - width / 2 + _whiteKeyWidth / 2 + _blackToWhiteKeyOffsets[i % 7]; (TODO figure out how this works)
-    // 
-
-    // MIDI a = 0, 12, 24 ... 
-
-    // z = (note.startBeat - (bar * beatsPerBar)) * _depth / (beatsPerBar * barsPerSlide)
-
-    // we start at bar 0
-
-    // angle = Mathf.Atan2(nextNote - currentNote, 1) * Mathf.Rad2Deg (Generated by copilot)
-
-    #region Songs
-
-    void GenerateSongs()
-    {
-        float slow = 1.25f;
-        // float fast = 1.66667f;
-
-        Tutorial(slow);
-    }
-
-    void Tutorial(float tempo)
-    {
-        Song newSong = new Song(tempo, 56);
-
-        // note, time offset, time 1, length 1, time 2, length 2, ...
-        newSong.InputNotes(39, 0, 0, 1, 8, 1);
-        newSong.InputNotes(41, 0, 1, 1, 7, 1);
-        newSong.InputNotes(43, 0, 2, 1, 6, 1);
-        newSong.InputNotes(44, 0, 3, 1, 5, 1);
-        newSong.InputNotes(46, 0, 4, 1);
-
-        newSong.InputNotes(39, 16, 0, 2, 8, 2);
-        newSong.InputNotes(43, 16, 2, 2, 6, 2);
-        newSong.InputNotes(46, 16, 4, 2);
-
-        newSong.InputNotes(43, 32, 0, 1, 8, 4);
-        newSong.InputNotes(45, 32, 1, 1, 7, 1);
-        newSong.InputNotes(47, 32, 2, 1, 6, 1);
-        newSong.InputNotes(48, 32, 3, 1, 5, 1);
-        newSong.InputNotes(50, 32, 4, 1);
-
-
-        newSong.InputNotes(41, 48, 2, 1);
-        newSong.InputNotes(46, 48, 3, 4);
-        newSong.InputNotes(34, 48, 0, 1);
-        newSong.InputNotes(38, 48, 1, 1);
-
-        _songs.Add(newSong);
-    }
-
-    #endregion
 }

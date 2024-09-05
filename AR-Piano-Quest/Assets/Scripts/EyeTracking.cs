@@ -18,13 +18,13 @@ public class EyeTracking : MonoBehaviour
         Vector3 relativePosition = _pianoRollTransform.InverseTransformPoint(transform.position);
         Quaternion relativeRotation = Quaternion.Inverse(_pianoRollTransform.rotation) * transform.rotation;
 
-        if (PianoRoll.GetGlobalTime() > 0)
+        if (SongController.GetGlobalTime() > 0)
         {
             if (transform.position != Vector3.zero || transform.rotation != Quaternion.identity)
             {
                 if (Vector3.Distance(relativePosition, _lastSentPosition) > 0.0001f || Quaternion.Angle(relativeRotation, _lastSentRotation) > 0.1f)
                 {
-                    string value = Round(PianoRoll.GetGlobalTime() + _firebaseManager.RecordTimeOffset, 3) + "";
+                    string value = Round(SongController.GetGlobalTime() + _firebaseManager.RecordTimeOffset, 3) + "";
 
                     value += "," + Round(relativePosition.x);
                     value += "," + Round(relativePosition.y);

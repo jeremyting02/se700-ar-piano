@@ -6,7 +6,7 @@ using Firebase.Database;
 
 public class FirebaseManager : MonoBehaviour
 {
-    [SerializeField] PianoRoll _pianoRoll;
+    [SerializeField] SongController _songController;
     [SerializeField] GameObject _pianoRollObject;
     [SerializeField] GameObject _pianoSlideObject;
     [SerializeField] Calibration _calibration;
@@ -51,7 +51,7 @@ public class FirebaseManager : MonoBehaviour
         DataSnapshot snapshop = args.Snapshot;
         if ((bool)snapshop.Value)
         {
-            _pianoRoll.TogglePause();
+            _songController.TogglePause();
             EndTrigger("start-stop");
         }
     }
@@ -61,7 +61,6 @@ public class FirebaseManager : MonoBehaviour
         DataSnapshot snapshop = args.Snapshot;
         if ((bool)snapshop.Value)
         {
-            // _pianoRoll.ToggleMetronome();
             HandleSlideRollChange();
             EndTrigger("metronome");
         }
@@ -72,7 +71,7 @@ public class FirebaseManager : MonoBehaviour
         DataSnapshot snapshop = args.Snapshot;
         if ((bool)snapshop.Value)
         {
-            _pianoRoll.ToggleCalibration();
+            _songController.ToggleCalibration();
             EndTrigger("calibration");
         }
     }
@@ -99,7 +98,7 @@ public class FirebaseManager : MonoBehaviour
     {
         DataSnapshot snapshop = args.Snapshot;
 
-        _pianoRoll.DoReset(int.Parse(snapshop.Value.ToString()));
+        _songController.DoReset(int.Parse(snapshop.Value.ToString()));
     }
 
     public void HandleUpdateEyeData(object sender, ValueChangedEventArgs args)
