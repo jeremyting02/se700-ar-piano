@@ -23,8 +23,8 @@ public class SongController : MonoBehaviour
 
     public class Song
     {
-        float _bpm;
-        public float getBPM { get { return _bpm; } }
+        float _bps;
+        public float getBPS { get { return _bps; } }
         float _nBeats; // nBeats
         public float getNBeats { get { return _nBeats; } }
 
@@ -47,9 +47,9 @@ public class SongController : MonoBehaviour
 
         public List<SlideNote> _slideInfo = new List<SlideNote>();
 
-        public Song(float bpm, float nBeats)
+        public Song(float bps, float nBeats)
         {
-            _bpm = bpm;
+            _bps = bps;
             _nBeats = nBeats;
         }
 
@@ -133,7 +133,7 @@ public class SongController : MonoBehaviour
         // Elapse time
         if (!_paused)
         {
-            _time += Time.deltaTime * GetSong().getBPM;
+            _time += Time.deltaTime * GetSong().getBPS;
         }
 
         // Tick metronome
@@ -157,7 +157,7 @@ public class SongController : MonoBehaviour
         _songIndex = songIndex;
 
         _time = -8;
-        _last_tick_time = (int)(-_time / _metronomePerBeat) * -_metronomePerBeat + (_metronomeOffset * GetSong().getBPM);
+        _last_tick_time = (int)(-_time / _metronomePerBeat) * -_metronomePerBeat + (_metronomeOffset * GetSong().getBPS);
         _paused = true;
 
         _pianoRoll.DoReset();

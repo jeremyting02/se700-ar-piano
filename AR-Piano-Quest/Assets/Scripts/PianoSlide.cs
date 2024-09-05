@@ -30,9 +30,6 @@ public class PianoSlide : MonoBehaviour
         }
     }
 
-
-    List<SongController.Song> _songs = new List<SongController.Song>();
-
     float _depth = 0.2f; // aka length
 
     [SerializeField] Transform _background;
@@ -54,7 +51,7 @@ public class PianoSlide : MonoBehaviour
     [SerializeField] float _blackKeyHover = 0.0002f;
 
     [SerializeField] SlideBar _slideBar;
-    [SerializeField] float _barThickness = 0.001f;
+    float _barThickness = 0.005f;
     [SerializeField] float _barHover = 0.0003f;
 
     Color _colorA = new Color(0.5f, 0, 1);
@@ -93,7 +90,7 @@ public class PianoSlide : MonoBehaviour
         // Initialse slide bar
         _slideBar.Initialise(SongController._time, _backgroundWidth, _depth, _beatLength, _barThickness, _barHover);
 
-        // DrawNoteLines(_songs[0], 0);
+        DrawNoteLines(SongController.GetSong(), 0);
     }
 
     private void Update()
@@ -393,7 +390,7 @@ public class PianoSlide : MonoBehaviour
 
     public void DoReset()
     {
-
+        _slideBar.DoReset(SongController._time);
     }
 
 }

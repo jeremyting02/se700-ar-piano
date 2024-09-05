@@ -191,6 +191,89 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &89859128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 89859129}
+  - component: {fileID: 89859131}
+  - component: {fileID: 89859130}
+  m_Layer: 0
+  m_Name: Quad
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &89859129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89859128}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 693919345}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!23 &89859130
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89859128}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: df387e5c73b271946a42164dac5deea9, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &89859131
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89859128}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &168434111
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,6 +422,7 @@ MonoBehaviour:
   _metronomePerBeat: 1
   _metronomeOffset: -0.2
   _pianoRoll: {fileID: 889373893}
+  _pianoSlide: {fileID: 0}
 --- !u!4 &216789290
 Transform:
   m_ObjectHideFlags: 0
@@ -861,12 +945,10 @@ MonoBehaviour:
   _gridBeatLineExample: {fileID: 0}
   _noteLineParent: {fileID: 0}
   _noteLineExample: {fileID: 0}
-  _whiteKeyColour: {r: 1, g: 1, b: 1, a: 1}
   _whiteKeyWidth: 0.022
   _whiteKeySpacing: 0.0015
   _whiteKeyCount: 52
   _whiteKeyHover: 0.0001
-  _blackKeyColour: {r: 0, g: 0, b: 1, a: 1}
   _blackKeyWidth: 0.0125
   _blackToWhiteKeyOffsets:
   - 0.013
@@ -877,10 +959,7 @@ MonoBehaviour:
   - 0.009
   - 0.011
   _blackKeyHover: 0.0002
-  _unitLength: 0.1
-  _metronomePerBeat: 1
-  _metronomeOffset: -0.2
-  _beatBar: {fileID: 0}
+  _slideBar: {fileID: 0}
   _barHover: 0.0003
 --- !u!4 &508773463
 Transform:
@@ -1079,6 +1158,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 611411592}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &693919344
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 693919345}
+  m_Layer: 0
+  m_Name: Visual Flat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &693919345
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693919344}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 89859129}
+  m_Father: {fileID: 1520662799}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &701602497
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,9 +1527,9 @@ MonoBehaviour:
   - 0.011
   _blackKeyHover: 0.0002
   _keyColumnExample: {fileID: 1267116165}
-  _unitLength: 0.1
+  _beatLength: 0.1
   _beatBar: {fileID: 850764446}
-  _barLength: 0.002
+  _barThickness: 0.001
   _barHover: 0.0003
   _calibrationKeyColour: {r: 0, g: 0, b: 1, a: 1}
   _calibrationKeys: 25000000280000002a0000002d000000
@@ -1702,6 +1813,7 @@ Transform:
   - {fileID: 1170829281}
   - {fileID: 342771697}
   - {fileID: 387609952}
+  - {fileID: 1520662799}
   m_Father: {fileID: 1171915867}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2034,12 +2146,10 @@ MonoBehaviour:
   _gridBeatLineExample: {fileID: 285881342}
   _noteLineParent: {fileID: 387609952}
   _noteLineExample: {fileID: 2105508885}
-  _whiteKeyColour: {r: 1, g: 1, b: 1, a: 1}
   _whiteKeyWidth: 0.022
   _whiteKeySpacing: 0.0015
   _whiteKeyCount: 52
   _whiteKeyHover: 0.0001
-  _blackKeyColour: {r: 0, g: 0, b: 1, a: 1}
   _blackKeyWidth: 0.0125
   _blackToWhiteKeyOffsets:
   - 0.013
@@ -2050,10 +2160,7 @@ MonoBehaviour:
   - 0.009
   - 0.011
   _blackKeyHover: 0.0002
-  _unitLength: 0.1
-  _metronomePerBeat: 1
-  _metronomeOffset: -0.2
-  _beatBar: {fileID: 0}
+  _slideBar: {fileID: 1520662800}
   _barHover: 0.0003
 --- !u!4 &1171915867
 Transform:
@@ -2563,6 +2670,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _leftController: {fileID: 0}
   _rightController: {fileID: 0}
+--- !u!1 &1520662798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1520662799}
+  - component: {fileID: 1520662800}
+  m_Layer: 0
+  m_Name: Slide Bar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1520662799
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520662798}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 693919345}
+  m_Father: {fileID: 1121398333}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1520662800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520662798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8326b3bbeb7794c49a5bec88ee33ccf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _exampleVisual: {fileID: 693919344}
 --- !u!1 &1664198263
 GameObject:
   m_ObjectHideFlags: 0

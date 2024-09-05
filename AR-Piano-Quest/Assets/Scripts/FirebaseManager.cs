@@ -16,6 +16,8 @@ public class FirebaseManager : MonoBehaviour
     float _recordTimeOffset;
     public float RecordTimeOffset { get { return _recordTimeOffset; } }
 
+    bool slideActive = true;
+
     bool _sendEyeData;
     List<string> _leftEyeData = new List<string>();
     List<string> _rightEyeData = new List<string>();
@@ -33,6 +35,10 @@ public class FirebaseManager : MonoBehaviour
         FirebaseDatabase.DefaultInstance.GetReference("recordTime").ValueChanged += HandleUpdateRecordTime;
 
         RequestRecordTime();
+
+        // slide is active by default
+        _pianoRollObject.transform.localScale = new Vector3(0, 0, 0);
+        _pianoSlideObject.transform.localScale = new Vector3(1, 1, 1);
     }
 
     private void Update()
@@ -176,15 +182,29 @@ public class FirebaseManager : MonoBehaviour
 
     public void HandleSlideRollChange()
     {
-        if (_pianoRollObject.activeSelf)
+        // if (_pianoRollObject.activeSelf)
+        // {
+        //     _pianoRollObject.SetActive(false);
+        //     _pianoSlideObject.SetActive(true);
+        // }
+        // else
+        // {
+        //     _pianoRollObject.SetActive(true);
+        //     _pianoSlideObject.SetActive(false);
+        // }
+
+        if (slideActive)
         {
-            _pianoRollObject.SetActive(false);
-            _pianoSlideObject.SetActive(true);
+            _pianoRollObject.transform.localScale = new Vector3(1, 1, 1);
+            _pianoSlideObject.transform.localScale = new Vector3(0, 0, 0);
         }
         else
         {
-            _pianoRollObject.SetActive(true);
-            _pianoSlideObject.SetActive(false);
+            _pianoRollObject.transform.localScale = new Vector3(0, 0, 0);
+            _pianoSlideObject.transform.localScale = new Vector3(1, 1, 1);
         }
+
+        slideActive = !slideActive;
+
     }
 }

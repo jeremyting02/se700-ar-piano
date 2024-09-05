@@ -4,138 +4,101 @@ using UnityEngine;
 
 public class SlideBar : MonoBehaviour
 {
-    int _maxBarCount;
     float _depth;
     float _beatLength;
     float _barThickness;
 
     [SerializeField] GameObject _exampleVisual;
 
-    public class Bar
-    {
-        float _startTime;
-        public float StartTime { get { return _startTime; } }
-        float _length;
-        public float Length { get { return _length; } }
+    // Single Bar GameObject
+    GameObject _barVisual;
+    float _barStartTime;
 
-        GameObject _visual;
-
-        public Bar(float startTime, float length)
-        {
-            _startTime = startTime;
-            _length = length;
-        }
-
-        public void Show(GameObject exampleVisual, Transform parent, bool metronomeMode)
-        {
-            _visual = Instantiate(exampleVisual, parent);
-            _visual.SetActive(metronomeMode);
-        }
-
-        public void NewMetronomeMode(bool metronomeMode)
-        {
-            if (_visual.activeInHierarchy != metronomeMode)
-            {
-                _visual.SetActive(metronomeMode);
-            }
-        }
-
-        public bool MoveUntilGone(float time, float depth, float beatLength, int maxBarCount)
-        {
-            // Update: Now we use (_startTime + time) to make the bars move forwards
-            float visualStart = Mathf.Max(0, (_startTime + time) * beatLength);
-            float visualEnd = Mathf.Min(depth, ((_startTime + time) * beatLength) + _length);
-            float visualLength = Mathf.Max(visualEnd - visualStart, 0);
-
-            if (visualLength > 0)
-            {
-                // Set the new position and scale based on forward movement
-                _visual.transform.localPosition = new Vector3(0, 0, Mathf.Lerp(visualStart, visualEnd, 0.5f));
-                _visual.transform.localScale = new Vector3(1, 1, visualLength);
-
-                return true;
-            }
-            else
-            {
-                Destroy(_visual);
-                _startTime -= maxBarCount;  // Move start time backwards when the bar goes off the screen
-                return false;
-            }
-        }
-
-        public void DestroyVisual()
-        {
-            Destroy(_visual);
-        }
-    }
-
-    List<Bar> _barsToShow = new List<Bar>();
-    List<Bar> _barsShowing = new List<Bar>();
-
-
+    /// <summary>
+    /// Initializes the SlideBar with the provided parameters.
+    /// </summary>
+    /// <param name="time">Current time to set the bar's start time.</param>
+    /// <param name="width">Width of the SlideBar.</param>
+    /// <param name="depth">Depth within which the bar moves.</param>
+    /// <param name="beatLength">Length of each beat.</param>
+    /// <param name="barThickness">Thickness of the bar.</param>
+    /// <param name="barHover">Vertical offset for the bar.</param>
     public void Initialise(float time, float width, float depth, float beatLength, float barThickness, float barHover)
     {
+        // Position and scale adjustments
         transform.localPosition += new Vector3(0, barHover, 0);
         transform.localScale = new Vector3(width, 1, 1);
+
+        // Assigning parameters
         _depth = depth;
         _beatLength = beatLength;
         _barThickness = barThickness;
 
+        // Reset the SlideBar
         DoReset(time);
     }
 
+    /// <summary>
+    /// Updates the SlideBar based on elapsed time.
+    /// </summary>
+    /// <param name="time">Current time to update the bar's position.</param>
     public void Elapse(float time)
     {
-        // Check to show next bar on the back of the piano roll
-        while (_barsToShow.Count > 0 && _barsToShow[0].StartTime * _beatLength < (time * _beatLength) + _depth)
+        if (_barVisual == null)
         {
-            Bar showNote = _barsToShow[0];
-            _barsShowing.Add(showNote);
-            _barsToShow.RemoveAt(0);
-
-            showNote.Show(_exampleVisual, transform, true);
+            // Instantiate and show the bar
+            _barVisual = Instantiate(_exampleVisual, transform);
+            _barVisual.SetActive(true);
+            _barStartTime = time;
         }
 
-        // Move all notes on the piano roll until they're gone
-        int i = 0;
-        while (i < _barsShowing.Count)
-        {
-            bool gone = !_barsShowing[i].MoveUntilGone(time, _depth, _beatLength, _maxBarCount);
+        // Calculate the new position based on elapsed time
+        float elapsedTime = time - _barStartTime;
+        float zPos = elapsedTime * _beatLength;
 
-            if (gone)
-            {
-                _barsToShow.Add(_barsShowing[i]);
-                _barsShowing.RemoveAt(i);
-            }
-            else
-            {
-                i++;
-            }
+        if (zPos > _depth)
+        {
+            // The bar has moved beyond the depth, so reset it
+            Destroy(_barVisual);
+            _barVisual = null;
+        }
+        else
+        {
+            // Update the bar's position
+            _barVisual.transform.localPosition = new Vector3(0, 0, zPos);
+            _barVisual.transform.localScale = new Vector3(1, 1, _barThickness);
         }
     }
 
+    /// <summary>
+    /// Sets the SlideBar to metronome mode.
+    /// </summary>
     public void SetMetronomeMode()
     {
-        foreach (Bar bar in _barsShowing)
+        if (_barVisual != null)
         {
-            bar.NewMetronomeMode(true);
+            _barVisual.SetActive(true); // Or adjust properties as needed
         }
     }
 
+    /// <summary>
+    /// Resets the SlideBar to its initial state.
+    /// </summary>
+    /// <param name="time">Current time to reset the bar's start time.</param>
     public void DoReset(float time)
     {
-        foreach (Bar bar in _barsToShow) bar.DestroyVisual();
-        foreach (Bar bar in _barsShowing) bar.DestroyVisual();
-
-        _barsToShow.Clear();
-        _barsShowing.Clear();
-
-        _maxBarCount = (int)(_depth / _beatLength);
-        for (int i = -_maxBarCount; i < 0; i++)
+        if (_barVisual != null)
         {
-            _barsToShow.Add(new Bar(i, _barThickness));
+            Destroy(_barVisual);
+            _barVisual = null;
         }
 
+        // Create and show a new bar
+        _barVisual = Instantiate(_exampleVisual, transform);
+        _barVisual.SetActive(true);
+        _barStartTime = time;
+
+        // Update the bar's position
         Elapse(time);
         SetMetronomeMode();
     }
