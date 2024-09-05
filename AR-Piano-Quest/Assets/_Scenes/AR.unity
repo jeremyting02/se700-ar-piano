@@ -714,7 +714,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a3def2841142e41b84b0467acd7cfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _depth: 0.8
   _background: {fileID: 0}
   _gridLineParent: {fileID: 0}
   _gridWhiteLineExample: {fileID: 0}
@@ -1987,7 +1986,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a3def2841142e41b84b0467acd7cfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _depth: 0.5
   _background: {fileID: 1170829281}
   _gridLineParent: {fileID: 342771697}
   _gridWhiteLineExample: {fileID: 2099847302}
@@ -2652,6 +2650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pianoRoll: {fileID: 889373893}
+  _pianoSlide: {fileID: 1171915866}
   _calibration: {fileID: 889373892}
 --- !u!4 &2070354650
 Transform:

@@ -8,7 +8,7 @@ public class BeatBar : MonoBehaviour
     float _depth;
     float _unitLength;
     float _barLength;
-    bool _metronomeMode;
+    bool _metronomeMode = true;
 
     [SerializeField] GameObject _exampleVisual;
 
@@ -92,7 +92,7 @@ public class BeatBar : MonoBehaviour
             _barsShowing.Add(showNote);
             _barsToShow.RemoveAt(0);
 
-            showNote.Show(_exampleVisual, transform, _metronomeMode);
+            showNote.Show(_exampleVisual, transform, true);
         }
 
         // Move all notes on the piano roll until they're gone
@@ -115,11 +115,9 @@ public class BeatBar : MonoBehaviour
 
     public void SetMetronomeMode(bool metronomeMode)
     {
-        _metronomeMode = metronomeMode;
-
         foreach (Bar bar in _barsShowing)
         {
-            bar.NewMetronomeMode(metronomeMode);
+            bar.NewMetronomeMode(true);
         }
     }
 
@@ -138,6 +136,6 @@ public class BeatBar : MonoBehaviour
         }
 
         Elapse(time);
-        SetMetronomeMode(_metronomeMode);
+        SetMetronomeMode(true);
     }
 }

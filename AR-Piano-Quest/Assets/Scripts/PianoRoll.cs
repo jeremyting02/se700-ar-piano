@@ -96,7 +96,7 @@ public class PianoRoll : MonoBehaviour
 
     [SerializeField] float _unitLength = 0.1f;
 
-    bool _metronomeMode = false;
+    bool _metronomeMode = true;
     AudioSource _metronome;
     float _last_tick_time;
     [SerializeField] int _metronomePerBeat = 1;
@@ -198,7 +198,7 @@ public class PianoRoll : MonoBehaviour
             if (_metronomeMode)
             {
                 _metronome.PlayOneShot(_metronome.clip);
-                //print("Tick");
+                // print("Tick");
             }
             _last_tick_time += _metronomePerBeat;
         }
@@ -211,7 +211,6 @@ public class PianoRoll : MonoBehaviour
 
         // Debug
         if (Input.GetKeyDown(KeyCode.Space)) TogglePause();
-        if (Input.GetKeyDown(KeyCode.LeftControl)) ToggleMetronome();
         if (Input.GetKeyDown(KeyCode.Tab)) ToggleCalibration();
         if (Input.GetKeyDown(KeyCode.Backspace)) DoReset();
     }
@@ -237,13 +236,6 @@ public class PianoRoll : MonoBehaviour
     public void TogglePause()
     {
         _paused = !_paused;
-    }
-
-    public void ToggleMetronome()
-    {
-        _metronomeMode = !_metronomeMode;
-
-        _beatBar.SetMetronomeMode(_metronomeMode);
     }
 
     public void ToggleCalibration()

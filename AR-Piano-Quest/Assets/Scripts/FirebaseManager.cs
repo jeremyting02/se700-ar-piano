@@ -7,6 +7,8 @@ using Firebase.Database;
 public class FirebaseManager : MonoBehaviour
 {
     [SerializeField] PianoRoll _pianoRoll;
+    [SerializeField] GameObject _pianoRollObject;
+    [SerializeField] GameObject _pianoSlideObject;
     [SerializeField] Calibration _calibration;
 
     DatabaseReference reference;
@@ -59,7 +61,8 @@ public class FirebaseManager : MonoBehaviour
         DataSnapshot snapshop = args.Snapshot;
         if ((bool)snapshop.Value)
         {
-            _pianoRoll.ToggleMetronome();
+            // _pianoRoll.ToggleMetronome();
+            HandleSlideRollChange();
             EndTrigger("metronome");
         }
     }
@@ -170,5 +173,19 @@ public class FirebaseManager : MonoBehaviour
     {
         DataSnapshot snapshop = args.Snapshot;
         _recordTimeOffset = float.Parse(snapshop.Value.ToString());
+    }
+
+    public void HandleSlideRollChange()
+    {
+        if (_pianoRollObject.activeSelf)
+        {
+            _pianoRollObject.SetActive(false);
+            _pianoSlideObject.SetActive(true);
+        }
+        else
+        {
+            _pianoRollObject.SetActive(true);
+            _pianoSlideObject.SetActive(false);
+        }
     }
 }

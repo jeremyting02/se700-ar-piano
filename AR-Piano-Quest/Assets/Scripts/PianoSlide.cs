@@ -80,7 +80,7 @@ public class PianoSlide : MonoBehaviour
     }
     List<Song> _songs = new List<Song>();
 
-    [SerializeField] float _depth = 0.8f; // aka length
+    float _depth = 0.2f; // aka length
 
     [SerializeField] Transform _background;
     [SerializeField] Transform _gridLineParent;
@@ -338,6 +338,49 @@ public class PianoSlide : MonoBehaviour
 
             // Set the rotation of the clone
             clone.transform.rotation = Quaternion.Euler(0, noteDisplay.angle, 0);
+
+            switch (currentNote.note % 12)
+            {
+                case 0:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorA;
+                    break;
+                case 1:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorA1;
+                    break;
+                case 2:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorB;
+                    break;
+                case 3:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorC;
+                    break;
+                case 4:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorC1;
+                    break;
+                case 5:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorD;
+                    break;
+                case 6:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorD1;
+                    break;
+                case 7:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorE;
+                    break;
+                case 8:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorF;
+                    break;
+                case 9:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorF1;
+                    break;
+                case 10:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorG;
+                    break;
+                case 11:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorG1;
+                    break;
+                default:
+                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
+                    break;
+            }
         }
     }
 
