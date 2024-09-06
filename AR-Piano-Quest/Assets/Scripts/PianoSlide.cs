@@ -30,7 +30,7 @@ public class PianoSlide : MonoBehaviour
         }
     }
 
-    float _depth = 0.2f; // aka length
+    float _depth = 0.4f; // aka length, calculated from lengthPerBeat
 
     [SerializeField] Transform _background;
     [SerializeField] Transform _gridLineParent;
@@ -67,10 +67,11 @@ public class PianoSlide : MonoBehaviour
     Color _colorG = new Color(0, 1, 1);
     Color _colorG1 = new Color(0, 0.25f, 1);
 
-    int beatsPerBar = 4;
-    int barsPerSlide = 2;
+    int _beatsPerBar = 4;
+    int _barsPerSlide = 4;
+    int _currentBar = 0;
 
-    float _beatLength = 0.1f;
+    float _lengthPerBeat = 0.025f;
 
     float _backgroundWidth;
 
@@ -78,7 +79,7 @@ public class PianoSlide : MonoBehaviour
     {
         // Calculate total width
         _backgroundWidth = _whiteKeyWidth * _whiteKeyCount + _whiteKeySpacing * (_whiteKeyCount - 1);
-        _beatLength = _depth / (beatsPerBar * barsPerSlide);
+        _depth = _lengthPerBeat * (_beatsPerBar * _barsPerSlide);
 
         // Set background size, position and material
         _background.localScale = new Vector3(_backgroundWidth, _depth, 1);
@@ -88,19 +89,53 @@ public class PianoSlide : MonoBehaviour
         CreateGridLines();
 
         // Initialse slide bar
-        _slideBar.Initialise(SongController._time, _backgroundWidth, _depth, _beatLength, _barThickness, _barHover);
+        _slideBar.Initialise(SongController._time, _backgroundWidth, _depth, _lengthPerBeat, _barThickness, _barHover);
 
         DrawNoteLines(SongController.GetSong(), 0);
     }
 
     private void Update()
     {
-        // Elapse time
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // Move to the next set of bars
+            _currentBar += _barsPerSlide;
+
+            print(_currentBar);
+
+            // Update the note lines for the next bars
+            DrawNoteLines(SongController.GetSong(), _currentBar);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            // Move to the next set of bars
+            _currentBar = 0;
+
+            print(_currentBar);
+
+            // Update the note lines for the next bars
+            DrawNoteLines(SongController.GetSong(), _currentBar);
+        }
+
+        // Elapse time and move the slide bar
         if (!SongController._paused)
         {
             _slideBar.Elapse(SongController._time);
-        }
 
+            // Check if the slide has moved to the next set of bars
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                print(_currentBar);
+
+                // Move to the next set of bars
+                _currentBar += _barsPerSlide;
+
+                // Update the note lines for the next bars
+                DrawNoteLines(SongController.GetSong(), _currentBar);
+            }
+        }
     }
 
     void CreateGridLines()
@@ -238,7 +273,7 @@ public class PianoSlide : MonoBehaviour
         }
 
         // Beat Lines
-        for (int i = 0; i < beatsPerBar * barsPerSlide + 1; i++)
+        for (int i = 0; i < _beatsPerBar * _barsPerSlide + 1; i++)
         {
             // Instantiate a clone of the example visual
             GameObject clone = Instantiate(_gridBeatLineExample, _gridLineParent);
@@ -247,14 +282,14 @@ public class PianoSlide : MonoBehaviour
             clone.SetActive(true);
 
             // Set the position of the clone
-            clone.transform.localPosition = new Vector3(0, _barHover * 2, _depth * i / (beatsPerBar * barsPerSlide));
+            clone.transform.localPosition = new Vector3(0, _barHover * 2, _depth * i / (_beatsPerBar * _barsPerSlide));
 
             // Set the scale of the clone
             clone.transform.localScale = new Vector3(_backgroundWidth, 1, _whiteKeyWidth / 10);
         }
 
         // Bar Lines
-        for (int i = 0; i < barsPerSlide + 1; i++)
+        for (int i = 0; i < _barsPerSlide + 1; i++)
         {
             // Instantiate a clone of the example visual
             GameObject clone = Instantiate(_gridBeatLineExample, _gridLineParent);
@@ -263,82 +298,96 @@ public class PianoSlide : MonoBehaviour
             clone.SetActive(true);
 
             // Set the position of the clone
-            clone.transform.localPosition = new Vector3(0, _barHover * 2, _depth * i / barsPerSlide);
+            clone.transform.localPosition = new Vector3(0, _barHover * 2, _depth * i / _barsPerSlide);
 
             // Set the scale of the clone
             clone.transform.localScale = new Vector3(_backgroundWidth, 1, _whiteKeyWidth / 5);
         }
     }
 
-    void DrawNoteLines(SongController.Song song, int bar)
+    void DrawNoteLines(SongController.Song song, int startBar)
     {
-        // Loop through each note in the song
-        for (int i = 0; i < song._slideInfo.Count - 1; i++)
+        // Clear any existing note lines first
+        foreach (Transform child in _noteLineParent)
         {
-            SongController.Song.SlideNote currentNote = song._slideInfo[i];
-            SongController.Song.SlideNote nextNote = song._slideInfo[i + 1];
+            Destroy(child.gameObject);
+        }
 
-            // Calculate positions for the current and next notes
-            NoteDisplay noteDisplay = CalculateNoteDisplay(currentNote, nextNote);
+        // Calculate the start and end beat for the current set of bars
+        int startBeat = startBar * _beatsPerBar;
+        int endBeat = (startBar + _barsPerSlide) * _beatsPerBar;
 
-            // Create a new line between the current and next note
-            // Instantiate a clone of the example visual
-            GameObject clone = Instantiate(_noteLineExample, _noteLineParent);
-
-            // Enable the clone (in case the example is disabled)
-            clone.SetActive(true);
-
-            // Set the position of the clone
-            clone.transform.localPosition = new Vector3(noteDisplay.centreX, _barHover * 2, noteDisplay.centreZ);
-
-            // Set the scale of the clone
-            clone.transform.localScale = new Vector3(_whiteKeyWidth / 5, 1, noteDisplay.length);
-
-            // Set the rotation of the clone
-            clone.transform.rotation = Quaternion.Euler(0, noteDisplay.angle, 0);
-
-            switch (currentNote.note % 12)
+        // Loop through each note in the song that falls within the current bar range
+        foreach (var currentNote in song._slideInfo)
+        {
+            // Only process notes that start within the current bar range
+            if (currentNote.startBeat >= startBeat && currentNote.startBeat < endBeat)
             {
-                case 0:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorA;
-                    break;
-                case 1:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorA1;
-                    break;
-                case 2:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorB;
-                    break;
-                case 3:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorC;
-                    break;
-                case 4:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorC1;
-                    break;
-                case 5:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorD;
-                    break;
-                case 6:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorD1;
-                    break;
-                case 7:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorE;
-                    break;
-                case 8:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorF;
-                    break;
-                case 9:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorF1;
-                    break;
-                case 10:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorG;
-                    break;
-                case 11:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorG1;
-                    break;
-                default:
-                    clone.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
-                    break;
+                // Find the next note for drawing the line between current and next notes
+                var nextNote = song._slideInfo.FirstOrDefault(n => n.startBeat > currentNote.startBeat);
+
+                if (nextNote != null)
+                {
+                    NoteDisplay noteDisplay = CalculateNoteDisplay(currentNote, nextNote);
+
+                    // Instantiate and set up note line visuals
+                    GameObject clone = Instantiate(_noteLineExample, _noteLineParent);
+                    clone.SetActive(true);
+                    clone.transform.localPosition = new Vector3(noteDisplay.centreX, _barHover * 2, noteDisplay.centreZ - _depth * startBar / _barsPerSlide);
+                    clone.transform.localScale = new Vector3(_whiteKeyWidth / 5, 1, noteDisplay.length);
+                    clone.transform.rotation = Quaternion.Euler(0, noteDisplay.angle, 0);
+
+                    // Set the color based on the note
+                    SetNoteColor(clone, currentNote.note);
+                }
             }
+        }
+    }
+
+    void SetNoteColor(GameObject clone, int note)
+    {
+        // Set the color based on the note value
+        switch (note % 12)
+        {
+            case 0:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorA;
+                break;
+            case 1:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorA1;
+                break;
+            case 2:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorB;
+                break;
+            case 3:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorC;
+                break;
+            case 4:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorC1;
+                break;
+            case 5:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorD;
+                break;
+            case 6:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorD1;
+                break;
+            case 7:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorE;
+                break;
+            case 8:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorF;
+                break;
+            case 9:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorF1;
+                break;
+            case 10:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorG;
+                break;
+            case 11:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = _colorG1;
+                break;
+            default:
+                clone.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
+                break;
         }
     }
 
@@ -361,7 +410,7 @@ public class PianoSlide : MonoBehaviour
         }
 
         // z
-        z = (currentNote.startBeat - (/*bar*/ 0 * beatsPerBar)) * _depth / (beatsPerBar * barsPerSlide);
+        z = (currentNote.startBeat - (/*bar*/ 0 * _beatsPerBar)) * _depth / (_beatsPerBar * _barsPerSlide);
 
         // note x
         calcNote = (float)nextNoteNote / 12 * 7;
@@ -377,7 +426,7 @@ public class PianoSlide : MonoBehaviour
         }
 
         // z
-        nextz = (nextNote.startBeat - (/*bar*/ 0 * beatsPerBar)) * _depth / (beatsPerBar * barsPerSlide);
+        nextz = (nextNote.startBeat - (/*bar*/ 0 * _beatsPerBar)) * _depth / (_beatsPerBar * _barsPerSlide);
 
         // length
         length = Mathf.Sqrt(Mathf.Pow(nextx - x, 2) + Mathf.Pow(nextz - z, 2));
