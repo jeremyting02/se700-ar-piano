@@ -79,13 +79,18 @@ public class PianoSlide : MonoBehaviour
 
     private void Awake()
     {
+        // Get the song parameters
+        _beatsPerBar = SongController.GetSong().getBeatsPerBar;
+        _barsToShowPerSlide = SongController.GetSong().getBarsToShowPerSlide;
+        _barsToPlayPerSlide = SongController.GetSong().getBarsToPlayPerSlide;
+
         // Calculate total width
         _backgroundWidth = _whiteKeyWidth * _whiteKeyCount + _whiteKeySpacing * (_whiteKeyCount - 1);
         _depth = _lengthPerBeat * (_beatsPerBar * _barsToShowPerSlide);
 
         // Set background size, position and material
         _background.localScale = new Vector3(_backgroundWidth, _depth, 1);
-        _background.localPosition += new Vector3(0, 0, _depth / 2);
+        _background.localPosition = new Vector3(0, 0, _depth / 2);
         _background.GetComponent<Renderer>().material.mainTextureScale = new Vector2(_whiteKeyCount, 1);
 
         CreateGridLines();
@@ -448,7 +453,22 @@ public class PianoSlide : MonoBehaviour
 
     public void DoReset()
     {
+        // Get the song parameters
+        _beatsPerBar = SongController.GetSong().getBeatsPerBar;
+        _barsToShowPerSlide = SongController.GetSong().getBarsToShowPerSlide;
+        _barsToPlayPerSlide = SongController.GetSong().getBarsToPlayPerSlide;
+
+        // Calculate total width
+        _backgroundWidth = _whiteKeyWidth * _whiteKeyCount + _whiteKeySpacing * (_whiteKeyCount - 1);
+        _depth = _lengthPerBeat * (_beatsPerBar * _barsToShowPerSlide);
+
+        // Set background size, position and material
+        _background.localScale = new Vector3(_backgroundWidth, _depth, 1);
+        _background.localPosition = new Vector3(0, 0, _depth / 2);
+        _background.GetComponent<Renderer>().material.mainTextureScale = new Vector2(_whiteKeyCount, 1);
+
         _slideBar.DoReset(SongController._time);
+        _slideBar.Initialise(SongController._time, _backgroundWidth, _lengthPerBeat * (_beatsPerBar * _barsToPlayPerSlide), _lengthPerBeat, _barThickness, _barHover);
         _currentBar = 0;
         CreateGridLines();
         DrawNoteLines(SongController.GetSong(), _currentBar);
