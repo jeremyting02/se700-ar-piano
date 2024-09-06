@@ -64,7 +64,7 @@ public class PianoReceiver : MonoBehaviour
             {
                 _firebaseManager.Trigger("metronome");
             }
-            if (note == 108)
+            if (note == 108) // To test recording
             {
                 _firebaseManager.SetRecordTime(_time);
 

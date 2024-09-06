@@ -9,6 +9,7 @@ public class SlideBar : MonoBehaviour
     float _barThickness;
 
     [SerializeField] GameObject _exampleVisual;
+    [SerializeField] PianoSlide _pianoSlide;
 
     // Single Bar GameObject
     GameObject _barVisual;
@@ -60,6 +61,7 @@ public class SlideBar : MonoBehaviour
         {
             // The bar has moved beyond the depth, so reset it
             Destroy(_barVisual);
+            _pianoSlide.DrawNextSlide();
             _barVisual = null;
         }
         else

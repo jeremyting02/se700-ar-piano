@@ -96,46 +96,20 @@ public class PianoSlide : MonoBehaviour
 
     private void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // Move to the next set of bars
-            _currentBar += _barsPerSlide;
-
-            print(_currentBar);
-
-            // Update the note lines for the next bars
-            DrawNoteLines(SongController.GetSong(), _currentBar);
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            // Move to the next set of bars
-            _currentBar = 0;
-
-            print(_currentBar);
-
-            // Update the note lines for the next bars
-            DrawNoteLines(SongController.GetSong(), _currentBar);
-        }
-
         // Elapse time and move the slide bar
         if (!SongController._paused)
         {
             _slideBar.Elapse(SongController._time);
-
-            // Check if the slide has moved to the next set of bars
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                print(_currentBar);
-
-                // Move to the next set of bars
-                _currentBar += _barsPerSlide;
-
-                // Update the note lines for the next bars
-                DrawNoteLines(SongController.GetSong(), _currentBar);
-            }
         }
+    }
+
+    public void DrawNextSlide()
+    {
+        // Move to the next set of bars
+        _currentBar += _barsPerSlide;
+
+        // Update the note lines for the next bars
+        DrawNoteLines(SongController.GetSong(), _currentBar);
     }
 
     void CreateGridLines()
@@ -440,6 +414,7 @@ public class PianoSlide : MonoBehaviour
     public void DoReset()
     {
         _slideBar.DoReset(SongController._time);
+        _currentBar = 0;
     }
 
 }

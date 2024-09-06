@@ -2570,6 +2570,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _exampleVisual: {fileID: 693919344}
+  _pianoSlide: {fileID: 1171915866}
 --- !u!1 &1664198263
 GameObject:
   m_ObjectHideFlags: 0
