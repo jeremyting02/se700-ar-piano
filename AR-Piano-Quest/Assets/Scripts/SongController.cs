@@ -91,8 +91,12 @@ public class SongController : MonoBehaviour
                 this.note = note;
                 this.disconnect = disconnect;
             }
-        }
 
+            public void setDisconnect(bool disconnect)
+            {
+                this.disconnect = disconnect;
+            }
+        }
 
         public class RollPressInfo
         {
@@ -233,6 +237,10 @@ public class SongController : MonoBehaviour
         newSong.InputNotes(46, 48, 3, 4);
         newSong.InputNotes(34, 48, 0, 1);
         newSong.InputNotes(38, 48, 1, 1);
+
+        newSong._slideInfo[8].setDisconnect(true);
+        newSong._slideInfo[13].setDisconnect(true);
+        newSong._slideInfo[22].setDisconnect(true);
 
         _songs.Add(newSong);
     }

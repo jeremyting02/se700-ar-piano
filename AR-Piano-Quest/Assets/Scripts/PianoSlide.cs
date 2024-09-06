@@ -40,6 +40,7 @@ public class PianoSlide : MonoBehaviour
 
     [SerializeField] Transform _noteLineParent;
     [SerializeField] GameObject _noteLineExample;
+    [SerializeField] GameObject _noteStartExample;
 
     [SerializeField] float _whiteKeyWidth = 0.022f;
     [SerializeField] float _whiteKeySpacing = 0.0015f;
@@ -68,7 +69,7 @@ public class PianoSlide : MonoBehaviour
     Color _colorG1 = new Color(0, 0.25f, 1);
 
     int _beatsPerBar = 4;
-    int _barsToShowPerSlide = 3;
+    int _barsToShowPerSlide = 4;
     int _barsToPlayPerSlide = 2;
     int _currentBar = 0;
 
@@ -81,7 +82,6 @@ public class PianoSlide : MonoBehaviour
         // Calculate total width
         _backgroundWidth = _whiteKeyWidth * _whiteKeyCount + _whiteKeySpacing * (_whiteKeyCount - 1);
         _depth = _lengthPerBeat * (_beatsPerBar * _barsToShowPerSlide);
-        _barsToPlayPerSlide = _barsToShowPerSlide - 1;
 
         // Set background size, position and material
         _background.localScale = new Vector3(_backgroundWidth, _depth, 1);
@@ -116,6 +116,12 @@ public class PianoSlide : MonoBehaviour
 
     void CreateGridLines()
     {
+        // Clear any existing note lines first
+        foreach (Transform child in _gridLineParent)
+        {
+            Destroy(child.gameObject);
+        }
+
         // White Lines
         for (int i = 0; i < _whiteKeyCount; i++)
         {
@@ -279,6 +285,17 @@ public class PianoSlide : MonoBehaviour
             // Set the scale of the clone
             clone.transform.localScale = new Vector3(_backgroundWidth, 1, _whiteKeyWidth / 5);
         }
+
+        // Preview Bar Cover
+        GameObject previewBarCover = Instantiate(_gridBeatLineExample, _gridLineParent);
+
+        previewBarCover.SetActive(true);
+
+        previewBarCover.transform.localPosition = new Vector3(0, _barHover * 5, _depth - _depth * (_barsToShowPerSlide - _barsToPlayPerSlide) / _barsToShowPerSlide / 2);
+
+        previewBarCover.transform.localScale = new Vector3(_backgroundWidth, 1, _lengthPerBeat * _beatsPerBar * (_barsToShowPerSlide - _barsToPlayPerSlide));
+
+        previewBarCover.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(1, 1, 1, 0.5f);
     }
 
     void DrawNoteLines(SongController.Song song, int startBar)
@@ -294,7 +311,7 @@ public class PianoSlide : MonoBehaviour
         int endBeat = (startBar + _barsToShowPerSlide) * _beatsPerBar;
 
         // Loop through each note in the song that falls within the current bar range
-        foreach (var currentNote in song._slideInfo)
+        foreach (SongController.Song.SlideNote currentNote in song._slideInfo)
         {
             // Only process notes that start within the current bar range
             if (currentNote.startBeat >= startBeat && currentNote.startBeat < endBeat)
@@ -302,23 +319,39 @@ public class PianoSlide : MonoBehaviour
                 // Find the next note for drawing the line between current and next notes
                 var nextNote = song._slideInfo.FirstOrDefault(n => n.startBeat > currentNote.startBeat);
 
-                if (nextNote != null)
+                NoteDisplay noteDisplay;
+
+                if (nextNote == null)
                 {
-                    NoteDisplay noteDisplay = CalculateNoteDisplay(currentNote, nextNote);
-
-                    // Instantiate and set up note line visuals
-                    GameObject clone = Instantiate(_noteLineExample, _noteLineParent);
-                    clone.SetActive(true);
-                    clone.transform.localPosition = new Vector3(noteDisplay.centreX, _barHover * 2, noteDisplay.centreZ - _depth * startBar / _barsToShowPerSlide);
-                    clone.transform.localScale = new Vector3(_whiteKeyWidth / 5, 1, noteDisplay.length);
-                    clone.transform.rotation = Quaternion.Euler(0, noteDisplay.angle, 0);
-
-                    // Set the color based on the note
-                    SetNoteColor(clone, currentNote.note);
+                    noteDisplay = CalculateNoteDisplay(currentNote, currentNote);
                 }
+                else
+                {
+                    noteDisplay = CalculateNoteDisplay(currentNote, nextNote);
+
+                    if (!currentNote.disconnect)
+                    {
+                        // Instantiate and set up note line visuals
+                        GameObject clone = Instantiate(_noteLineExample, _noteLineParent);
+                        clone.SetActive(true);
+                        clone.transform.localPosition = new Vector3(noteDisplay.centreX, _barHover * 2, noteDisplay.centreZ - _depth * startBar / _barsToShowPerSlide);
+                        clone.transform.localScale = new Vector3(_whiteKeyWidth / 5, 1, noteDisplay.length);
+                        clone.transform.rotation = Quaternion.Euler(0, noteDisplay.angle, 0);
+                        SetNoteColor(clone, currentNote.note);
+                    }
+                }
+
+                // Instantiate and set up note start visuals
+                GameObject startClone = Instantiate(_noteStartExample, _noteLineParent);
+                startClone.SetActive(true);
+                startClone.transform.localPosition = new Vector3(noteDisplay.startX, _barHover * 2, noteDisplay.startZ - _depth * startBar / _barsToShowPerSlide);
+                startClone.transform.localScale = new Vector3(_whiteKeyWidth / 2, _whiteKeyWidth / 2, _whiteKeyWidth / 2);
+                SetNoteColor(startClone, currentNote.note);
+
             }
         }
     }
+
 
     void SetNoteColor(GameObject clone, int note)
     {
@@ -417,6 +450,8 @@ public class PianoSlide : MonoBehaviour
     {
         _slideBar.DoReset(SongController._time);
         _currentBar = 0;
+        CreateGridLines();
+        DrawNoteLines(SongController.GetSong(), _currentBar);
     }
 
 }
