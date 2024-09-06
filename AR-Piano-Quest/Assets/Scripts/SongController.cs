@@ -28,8 +28,10 @@ public class SongController : MonoBehaviour
         float _nBeats; // nBeats
         public float getNBeats { get { return _nBeats; } }
 
-        int beatsPerBar = 4;
-        int barsPerSlide = 2;
+        int _nStartBeats = 8;
+
+        int _beatsPerBar = 4;
+        int _barsPerSlide = 2;
 
         Dictionary<int, List<RollPressInfo>> _rollInfo = new Dictionary<int, List<RollPressInfo>>();
         public Dictionary<int, RollPressInfo[]> KeyPresses
@@ -50,7 +52,7 @@ public class SongController : MonoBehaviour
         public Song(float bps, float nBeats)
         {
             _bps = bps;
-            _nBeats = nBeats;
+            _nBeats = nBeats + _nStartBeats;
         }
 
         public void InputNotes(string note, float timeOffset, params float[] info)
@@ -71,8 +73,8 @@ public class SongController : MonoBehaviour
 
             for (int i = 0; i < info.Length; i += 2)
             {
-                _rollInfo[note].Add(new RollPressInfo(info[i] + timeOffset, info[i + 1]));
-                _slideInfo.Add(new SlideNote(info[i] + timeOffset, note, false));
+                _rollInfo[note].Add(new RollPressInfo(info[i] + timeOffset + _nStartBeats, info[i + 1]));
+                _slideInfo.Add(new SlideNote(info[i] + timeOffset + _nStartBeats, note, false));
             }
             _slideInfo = _slideInfo.OrderBy(n => n.startBeat).ToList();
         }
@@ -114,7 +116,7 @@ public class SongController : MonoBehaviour
         GenerateSongs();
 
         // Setup time
-        _time = -8; // -_depth / _beatLength; 8 beats?
+        _time = 0; // -8; // -_depth / _beatLength; 8 beats?
         _last_tick_time = (int)_time - 0.2f;
 
         // Setup metronome
@@ -156,7 +158,7 @@ public class SongController : MonoBehaviour
     {
         _songIndex = songIndex;
 
-        _time = -8;
+        _time = 0;
         _last_tick_time = (int)(-_time / _metronomePerBeat) * -_metronomePerBeat + (_metronomeOffset * GetSong().getBPS);
         _paused = true;
 

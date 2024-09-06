@@ -68,7 +68,8 @@ public class PianoSlide : MonoBehaviour
     Color _colorG1 = new Color(0, 0.25f, 1);
 
     int _beatsPerBar = 4;
-    int _barsPerSlide = 4;
+    int _barsToShowPerSlide = 3;
+    int _barsToPlayPerSlide = 2;
     int _currentBar = 0;
 
     float _lengthPerBeat = 0.025f;
@@ -79,7 +80,8 @@ public class PianoSlide : MonoBehaviour
     {
         // Calculate total width
         _backgroundWidth = _whiteKeyWidth * _whiteKeyCount + _whiteKeySpacing * (_whiteKeyCount - 1);
-        _depth = _lengthPerBeat * (_beatsPerBar * _barsPerSlide);
+        _depth = _lengthPerBeat * (_beatsPerBar * _barsToShowPerSlide);
+        _barsToPlayPerSlide = _barsToShowPerSlide - 1;
 
         // Set background size, position and material
         _background.localScale = new Vector3(_backgroundWidth, _depth, 1);
@@ -89,7 +91,7 @@ public class PianoSlide : MonoBehaviour
         CreateGridLines();
 
         // Initialse slide bar
-        _slideBar.Initialise(SongController._time, _backgroundWidth, _depth, _lengthPerBeat, _barThickness, _barHover);
+        _slideBar.Initialise(SongController._time, _backgroundWidth, _lengthPerBeat * (_beatsPerBar * _barsToPlayPerSlide), _lengthPerBeat, _barThickness, _barHover);
 
         DrawNoteLines(SongController.GetSong(), 0);
     }
@@ -106,7 +108,7 @@ public class PianoSlide : MonoBehaviour
     public void DrawNextSlide()
     {
         // Move to the next set of bars
-        _currentBar += _barsPerSlide;
+        _currentBar += _barsToPlayPerSlide;
 
         // Update the note lines for the next bars
         DrawNoteLines(SongController.GetSong(), _currentBar);
@@ -247,7 +249,7 @@ public class PianoSlide : MonoBehaviour
         }
 
         // Beat Lines
-        for (int i = 0; i < _beatsPerBar * _barsPerSlide + 1; i++)
+        for (int i = 0; i < _beatsPerBar * _barsToShowPerSlide + 1; i++)
         {
             // Instantiate a clone of the example visual
             GameObject clone = Instantiate(_gridBeatLineExample, _gridLineParent);
@@ -256,14 +258,14 @@ public class PianoSlide : MonoBehaviour
             clone.SetActive(true);
 
             // Set the position of the clone
-            clone.transform.localPosition = new Vector3(0, _barHover * 2, _depth * i / (_beatsPerBar * _barsPerSlide));
+            clone.transform.localPosition = new Vector3(0, _barHover * 2, _depth * i / (_beatsPerBar * _barsToShowPerSlide));
 
             // Set the scale of the clone
             clone.transform.localScale = new Vector3(_backgroundWidth, 1, _whiteKeyWidth / 10);
         }
 
         // Bar Lines
-        for (int i = 0; i < _barsPerSlide + 1; i++)
+        for (int i = 0; i < _barsToShowPerSlide + 1; i++)
         {
             // Instantiate a clone of the example visual
             GameObject clone = Instantiate(_gridBeatLineExample, _gridLineParent);
@@ -272,7 +274,7 @@ public class PianoSlide : MonoBehaviour
             clone.SetActive(true);
 
             // Set the position of the clone
-            clone.transform.localPosition = new Vector3(0, _barHover * 2, _depth * i / _barsPerSlide);
+            clone.transform.localPosition = new Vector3(0, _barHover * 2, _depth * i / _barsToShowPerSlide);
 
             // Set the scale of the clone
             clone.transform.localScale = new Vector3(_backgroundWidth, 1, _whiteKeyWidth / 5);
@@ -289,7 +291,7 @@ public class PianoSlide : MonoBehaviour
 
         // Calculate the start and end beat for the current set of bars
         int startBeat = startBar * _beatsPerBar;
-        int endBeat = (startBar + _barsPerSlide) * _beatsPerBar;
+        int endBeat = (startBar + _barsToShowPerSlide) * _beatsPerBar;
 
         // Loop through each note in the song that falls within the current bar range
         foreach (var currentNote in song._slideInfo)
@@ -307,7 +309,7 @@ public class PianoSlide : MonoBehaviour
                     // Instantiate and set up note line visuals
                     GameObject clone = Instantiate(_noteLineExample, _noteLineParent);
                     clone.SetActive(true);
-                    clone.transform.localPosition = new Vector3(noteDisplay.centreX, _barHover * 2, noteDisplay.centreZ - _depth * startBar / _barsPerSlide);
+                    clone.transform.localPosition = new Vector3(noteDisplay.centreX, _barHover * 2, noteDisplay.centreZ - _depth * startBar / _barsToShowPerSlide);
                     clone.transform.localScale = new Vector3(_whiteKeyWidth / 5, 1, noteDisplay.length);
                     clone.transform.rotation = Quaternion.Euler(0, noteDisplay.angle, 0);
 
@@ -384,7 +386,7 @@ public class PianoSlide : MonoBehaviour
         }
 
         // z
-        z = (currentNote.startBeat - (/*bar*/ 0 * _beatsPerBar)) * _depth / (_beatsPerBar * _barsPerSlide);
+        z = (currentNote.startBeat - (/*bar*/ 0 * _beatsPerBar)) * _depth / (_beatsPerBar * _barsToShowPerSlide);
 
         // note x
         calcNote = (float)nextNoteNote / 12 * 7;
@@ -400,7 +402,7 @@ public class PianoSlide : MonoBehaviour
         }
 
         // z
-        nextz = (nextNote.startBeat - (/*bar*/ 0 * _beatsPerBar)) * _depth / (_beatsPerBar * _barsPerSlide);
+        nextz = (nextNote.startBeat - (/*bar*/ 0 * _beatsPerBar)) * _depth / (_beatsPerBar * _barsToShowPerSlide);
 
         // length
         length = Mathf.Sqrt(Mathf.Pow(nextx - x, 2) + Mathf.Pow(nextz - z, 2));

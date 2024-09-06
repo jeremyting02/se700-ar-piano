@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SlideBar : MonoBehaviour
 {
-    float _depth;
+    float _barMoveDepth;
     float _beatLength;
     float _barThickness;
 
@@ -20,18 +20,18 @@ public class SlideBar : MonoBehaviour
     /// </summary>
     /// <param name="time">Current time to set the bar's start time.</param>
     /// <param name="width">Width of the SlideBar.</param>
-    /// <param name="depth">Depth within which the bar moves.</param>
+    /// <param name="barMoveDepth">Depth within which the bar moves.</param>
     /// <param name="beatLength">Length of each beat.</param>
     /// <param name="barThickness">Thickness of the bar.</param>
     /// <param name="barHover">Vertical offset for the bar.</param>
-    public void Initialise(float time, float width, float depth, float beatLength, float barThickness, float barHover)
+    public void Initialise(float time, float width, float barMoveDepth, float beatLength, float barThickness, float barHover)
     {
         // Position and scale adjustments
         transform.localPosition += new Vector3(0, barHover, 0);
         transform.localScale = new Vector3(width, 1, 1);
 
         // Assigning parameters
-        _depth = depth;
+        _barMoveDepth = barMoveDepth;
         _beatLength = beatLength;
         _barThickness = barThickness;
 
@@ -57,7 +57,7 @@ public class SlideBar : MonoBehaviour
         float elapsedTime = time - _barStartTime;
         float zPos = elapsedTime * _beatLength;
 
-        if (zPos > _depth)
+        if (zPos > _barMoveDepth)
         {
             // The bar has moved beyond the depth, so reset it
             Destroy(_barVisual);
