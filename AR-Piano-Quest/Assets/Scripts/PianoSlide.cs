@@ -342,7 +342,7 @@ public class PianoSlide : MonoBehaviour
                         clone.SetActive(true);
                         clone.transform.localPosition = new Vector3(noteDisplay.centreX, _barHover * 2, noteDisplay.centreZ - _depth * startBar / _barsToShowPerSlide);
                         clone.transform.localScale = new Vector3(_whiteKeyWidth / 5, 1, noteDisplay.length);
-                        clone.transform.rotation = Quaternion.Euler(0, noteDisplay.angle, 0);
+                        clone.transform.localRotation = Quaternion.Euler(0, noteDisplay.angle, 0);
                         SetNoteColor(clone, currentNote.note);
                     }
                 }
@@ -515,20 +515,20 @@ public class PianoSlide : MonoBehaviour
     // Coroutine for smooth movement
     IEnumerator SmoothMove()
     {
-        Vector3 startPosition = noteLines.position;
+        Vector3 startPosition = noteLines.localPosition;
         Vector3 targetPosition = new Vector3(startPosition.x, startPosition.y, startPosition.z - _lengthPerBeat * (_beatsPerBar * _barsToPlayPerSlide));
 
         float elapsedTime = 0f;
 
         while (elapsedTime < (1 / SongController.GetSong().getBPS))
         {
-            noteLines.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / (1 / SongController.GetSong().getBPS));
+            noteLines.localPosition = Vector3.Lerp(startPosition, targetPosition, elapsedTime / (1 / SongController.GetSong().getBPS));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         // Ensure the position is set to the target at the end
-        noteLines.position = startPosition;
+        noteLines.localPosition = startPosition;
         DrawNextSlide();
     }
 }
