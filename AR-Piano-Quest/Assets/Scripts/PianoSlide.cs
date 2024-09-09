@@ -108,11 +108,7 @@ public class PianoSlide : MonoBehaviour
         {
             _slideBar.Elapse(SongController._time);
         }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            MoveNoteLinesForTransition();
-        }
+        UpdateNoteLineVisibility();
     }
 
     public void DrawNextSlide()
@@ -362,6 +358,34 @@ public class PianoSlide : MonoBehaviour
         }
     }
 
+    [SerializeField] float _fadeOutDistance = 0.1f; // Distance below zero when fading should start
+
+    // Call this function within your update loop or when needed to fade out notes past 0
+    public void UpdateNoteLineVisibility()
+    {
+        float parentZ = _noteLineParent.localPosition.z;
+
+        foreach (Transform noteLine in _noteLineParent)
+        {
+            // Calculate the actual global Z position of each note by adding the parent's Z position
+            float noteGlobalZ = noteLine.localPosition.z + parentZ;
+
+            if (noteGlobalZ < 0)
+            {
+                // Fade out the note line as it passes below 0
+                float alpha = Mathf.Clamp01(noteGlobalZ / _fadeOutDistance);
+
+                // Assuming the note line has a material with a color we can modify
+                Renderer renderer = noteLine.GetChild(0).GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    Color color = renderer.material.color;
+                    color.a = alpha; // Set alpha based on global Z position
+                    renderer.material.color = color;
+                }
+            }
+        }
+    }
 
     void SetNoteColor(GameObject clone, int note)
     {
