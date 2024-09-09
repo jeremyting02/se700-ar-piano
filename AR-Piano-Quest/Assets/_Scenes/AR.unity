@@ -2050,6 +2050,8 @@ MonoBehaviour:
   _blackKeyHover: 0.0002
   _slideBar: {fileID: 1520662800}
   _barHover: 0.0003
+  noteLines: {fileID: 387609952}
+  transitionDuration: 0.5
 --- !u!4 &1171915867
 Transform:
   m_ObjectHideFlags: 0

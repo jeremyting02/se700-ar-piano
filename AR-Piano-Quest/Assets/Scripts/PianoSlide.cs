@@ -96,7 +96,7 @@ public class PianoSlide : MonoBehaviour
         CreateGridLines();
 
         // Initialse slide bar
-        _slideBar.Initialise(SongController._time, _backgroundWidth, _lengthPerBeat * (_beatsPerBar * _barsToPlayPerSlide), _lengthPerBeat, _barThickness, _barHover);
+        _slideBar.Initialise(SongController._time, _backgroundWidth, _lengthPerBeat * (_beatsPerBar * _barsToPlayPerSlide), _lengthPerBeat, _barThickness, _barHover, SongController.GetSong().getBPS);
 
         DrawNoteLines(SongController.GetSong(), 0);
     }
@@ -107,6 +107,11 @@ public class PianoSlide : MonoBehaviour
         if (!SongController._paused)
         {
             _slideBar.Elapse(SongController._time);
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            MoveNoteLinesForTransition();
         }
     }
 
@@ -468,10 +473,38 @@ public class PianoSlide : MonoBehaviour
         _background.GetComponent<Renderer>().material.mainTextureScale = new Vector2(_whiteKeyCount, 1);
 
         _slideBar.DoReset(SongController._time);
-        _slideBar.Initialise(SongController._time, _backgroundWidth, _lengthPerBeat * (_beatsPerBar * _barsToPlayPerSlide), _lengthPerBeat, _barThickness, _barHover);
+        _slideBar.Initialise(SongController._time, _backgroundWidth, _lengthPerBeat * (_beatsPerBar * _barsToPlayPerSlide), _lengthPerBeat, _barThickness, _barHover, SongController.GetSong().getBPS);
         _currentBar = 0;
         CreateGridLines();
         DrawNoteLines(SongController.GetSong(), _currentBar);
     }
 
+    // Reference to the NoteLines object
+    [SerializeField] public Transform noteLines;
+
+    // Call this function when you're in the last half note of the current slide
+    public void MoveNoteLinesForTransition()
+    {
+        StartCoroutine(SmoothMove());
+    }
+
+    // Coroutine for smooth movement
+    IEnumerator SmoothMove()
+    {
+        Vector3 startPosition = noteLines.position;
+        Vector3 targetPosition = new Vector3(startPosition.x, startPosition.y, startPosition.z - _lengthPerBeat * (_beatsPerBar * _barsToPlayPerSlide));
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < (1 / SongController.GetSong().getBPS))
+        {
+            noteLines.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / (1 / SongController.GetSong().getBPS));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the position is set to the target at the end
+        noteLines.position = startPosition;
+        DrawNextSlide();
+    }
 }
