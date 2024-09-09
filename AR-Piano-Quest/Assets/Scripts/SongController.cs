@@ -261,28 +261,28 @@ public class SongController : MonoBehaviour
     void Cuckoo(float tempo)
     {
         // perBar, show, play
-        Song newSong = new Song(tempo, 48 + 4, 3, 6, 4);
+        Song newSong = new Song(tempo, 48 - 2, 3, 4, 2);
 
-        newSong.InputNotes("g", 0 + 4, 0, 2, 3, 2);
-        newSong.InputNotes("e", 0 + 4, 2, 1, 5, 1, 9, 2);
-        newSong.InputNotes("d", 0 + 4, 6, 1, 8, 1);
-        newSong.InputNotes("c", 0 + 4, 7, 1, 11, 1);
+        newSong.InputNotes("g", 0 - 2, 0, 2, 3, 2);
+        newSong.InputNotes("e", 0 - 2, 2, 1, 5, 1, 9, 2);
+        newSong.InputNotes("d", 0 - 2, 6, 1, 8, 1);
+        newSong.InputNotes("c", 0 - 2, 7, 1, 11, 1);
 
-        newSong.InputNotes("g", 12 + 4, 0, 2, 3, 2);
-        newSong.InputNotes("e", 12 + 4, 2, 1, 5, 1, 7, 1);
-        newSong.InputNotes("d", 12 + 4, 6, 1, 8, 1);
-        newSong.InputNotes("c", 12 + 4, 9, 3);
+        newSong.InputNotes("g", 12 - 2, 0, 2, 3, 2);
+        newSong.InputNotes("e", 12 - 2, 2, 1, 5, 1, 7, 1);
+        newSong.InputNotes("d", 12 - 2, 6, 1, 8, 1);
+        newSong.InputNotes("c", 12 - 2, 9, 3);
 
-        newSong.InputNotes("d", 24 + 4, 0, 1, 1, 1, 5, 1);
-        newSong.InputNotes("e", 24 + 4, 2, 1, 6, 1, 7, 1, 11, 1);
-        newSong.InputNotes("f", 24 + 4, 3, 2, 8, 1);
-        newSong.InputNotes("g", 24 + 4, 9, 2);
+        newSong.InputNotes("d", 24 - 2, 0, 1, 1, 1, 5, 1);
+        newSong.InputNotes("e", 24 - 2, 2, 1, 6, 1, 7, 1, 11, 1);
+        newSong.InputNotes("f", 24 - 2, 3, 2, 8, 1);
+        newSong.InputNotes("g", 24 - 2, 9, 2);
 
-        newSong.InputNotes("g", 36 + 4, 0, 2, 3, 2);
-        newSong.InputNotes("e", 36 + 4, 2, 1, 5, 1, 7, 1);
-        newSong.InputNotes("f", 36 + 4, 6, 1);
-        newSong.InputNotes("d", 36 + 4, 8, 1);
-        newSong.InputNotes("c", 36 + 4, 9, 3);
+        newSong.InputNotes("g", 36 - 2, 0, 2, 3, 2);
+        newSong.InputNotes("e", 36 - 2, 2, 1, 5, 1, 7, 1);
+        newSong.InputNotes("f", 36 - 2, 6, 1);
+        newSong.InputNotes("d", 36 - 2, 8, 1);
+        newSong.InputNotes("c", 36 - 2, 9, 3);
 
         newSong._slideInfo[8].setDisconnect(true);
         newSong._slideInfo[16].setDisconnect(true);
@@ -294,7 +294,7 @@ public class SongController : MonoBehaviour
 
     void AuClairDeLaLune(float tempo)
     {
-        Song newSong = new Song(tempo, 64, 4, 6, 4);
+        Song newSong = new Song(tempo, 64, 4, 4, 2);
 
         newSong.InputNotes(34 + 12, 0, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
         newSong.InputNotes(36 + 12, 0, 3, 1, 6, 2, 10, 1, 11, 1);
@@ -314,12 +314,20 @@ public class SongController : MonoBehaviour
         newSong.InputNotes(36 + 12, 48, 3, 1, 6, 2, 10, 1, 11, 1);
         newSong.InputNotes(38 + 12, 48, 4, 2, 9, 1);
 
+        newSong._slideInfo[5].setDisconnect(true);
+        newSong._slideInfo[10].setDisconnect(true);
+        newSong._slideInfo[16].setDisconnect(true);
+        newSong._slideInfo[21].setDisconnect(true);
+        newSong._slideInfo[27].setDisconnect(true);
+        newSong._slideInfo[32].setDisconnect(true);
+        newSong._slideInfo[38].setDisconnect(true);
+
         _songs.Add(newSong);
     }
 
     void ObLaDiLaDa(float tempo)
     {
-        Song newSong = new Song(tempo, 64, 4, 6, 4);
+        Song newSong = new Song(tempo, 64, 4, 4, 2);
 
         newSong.InputNotes(48, 0, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1);
         newSong.InputNotes(46, 0, 6, 1, 9, 2, 11, 5);
@@ -338,12 +346,22 @@ public class SongController : MonoBehaviour
         newSong.InputNotes(51, 32, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 9, 2, 14, 1);
         newSong.InputNotes(53, 32, 11, 2, 13, 1);
 
+        newSong._slideInfo[10].setDisconnect(true);
+        newSong._slideInfo[19].setDisconnect(true);
+        newSong._slideInfo[30].setDisconnect(true);
+
+        newSong._slideInfo[5].setDisconnect(true);
+        newSong._slideInfo[16].setDisconnect(true);
+        newSong._slideInfo[25].setDisconnect(true);
+        newSong._slideInfo[35].setDisconnect(true);
+        newSong._slideInfo[39].setDisconnect(true);
+
         _songs.Add(newSong);
     }
 
     void AlleMeineEntchen(float tempo)
     {
-        Song newSong = new Song(tempo, 64, 4, 6, 4);
+        Song newSong = new Song(tempo, 64, 4, 4, 2);
 
         newSong.InputNotes(39, 0, 0, 1);
         newSong.InputNotes(41, 0, 1, 1);
@@ -369,40 +387,52 @@ public class SongController : MonoBehaviour
         newSong.InputNotes(43, 48, 4, 2, 6, 2);
         newSong.InputNotes(44, 48, 0, 1, 1, 1, 2, 1, 3, 1);
 
+        newSong._slideInfo[5].setDisconnect(true);
+        newSong._slideInfo[10].setDisconnect(true);
+        newSong._slideInfo[16].setDisconnect(true);
+        newSong._slideInfo[21].setDisconnect(true);
+        newSong._slideInfo[27].setDisconnect(true);
+        newSong._slideInfo[32].setDisconnect(true);
+        newSong._slideInfo[38].setDisconnect(true);
+
         _songs.Add(newSong);
     }
 
     void BeutifulBrownEyes(float tempo)
     {
-        Song newSong = new Song(tempo, 48, 4, 6, 4);
+        Song newSong = new Song(tempo, 48 - 2, 3, 4, 2);
 
-        newSong.InputNotes(50, 0, 0, 1, 1, 1, 2, 1, 5, 1);
-        newSong.InputNotes(46, 0, 3, 1);
-        newSong.InputNotes(48, 0, 4, 1);
-        newSong.InputNotes(51, 0, 6, 1, 7, 2, 9, 3);
+        newSong.InputNotes(50, 0 - 2, 0, 1, 1, 1, 2, 1, 5, 1);
+        newSong.InputNotes(46, 0 - 2, 3, 1);
+        newSong.InputNotes(48, 0 - 2, 4, 1);
+        newSong.InputNotes(51, 0 - 2, 6, 1, 7, 2, 9, 3);
 
-        newSong.InputNotes(50, 12, 0, 1, 1, 1, 2, 1, 5, 1);
-        newSong.InputNotes(46, 12, 3, 1);
-        newSong.InputNotes(48, 12, 4, 1, 6, 3);
-        newSong.InputNotes(53, 12, 9, 3);
+        newSong.InputNotes(50, 12 - 2, 0, 1, 1, 1, 2, 1, 5, 1);
+        newSong.InputNotes(46, 12 - 2, 3, 1);
+        newSong.InputNotes(48, 12 - 2, 4, 1, 6, 3);
+        newSong.InputNotes(53, 12 - 2, 9, 3);
 
-        newSong.InputNotes(50, 24, 0, 1, 1, 1, 2, 1, 5, 1);
-        newSong.InputNotes(46, 24, 3, 1);
-        newSong.InputNotes(48, 24, 4, 1);
-        newSong.InputNotes(51, 24, 6, 1, 7, 2, 9, 3);
+        newSong.InputNotes(50, 24 - 2, 0, 1, 1, 1, 2, 1, 5, 1);
+        newSong.InputNotes(46, 24 - 2, 3, 1);
+        newSong.InputNotes(48, 24 - 2, 4, 1);
+        newSong.InputNotes(51, 24 - 2, 6, 1, 7, 2, 9, 3);
 
-        newSong.InputNotes(50, 36, 2, 1, 4, 1);
-        newSong.InputNotes(46, 36, 6, 6);
-        newSong.InputNotes(48, 36, 1, 1, 5, 1);
-        newSong.InputNotes(51, 36, 3, 1);
-        newSong.InputNotes(53, 36, 0, 1);
+        newSong.InputNotes(50, 36 - 2, 2, 1, 4, 1);
+        newSong.InputNotes(46, 36 - 2, 6, 6);
+        newSong.InputNotes(48, 36 - 2, 1, 1, 5, 1);
+        newSong.InputNotes(51, 36 - 2, 3, 1);
+        newSong.InputNotes(53, 36 - 2, 0, 1);
+
+        newSong._slideInfo[8].setDisconnect(true);
+        newSong._slideInfo[16].setDisconnect(true);
+        newSong._slideInfo[25].setDisconnect(true);
 
         _songs.Add(newSong);
     }
 
     void GilligansIsle(float tempo)
     {
-        Song newSong = new Song(tempo, 64, 4, 6, 4);
+        Song newSong = new Song(tempo, 64, 4, 4, 2);
 
         newSong.InputNotes(41, 0, 0, 1, 8, 1);
         newSong.InputNotes(48, 0, 1, 1, 2, 1, 3, 1, 9, 1, 10, 1, 11, 1);
@@ -431,6 +461,19 @@ public class SongController : MonoBehaviour
         newSong.InputNotes(43, 48, 10, 1);
         newSong.InputNotes(39, 48, 11, 1);
         newSong.InputNotes(51, 48, 5, 1, 6, 1);
+
+
+        newSong._slideInfo[3].setDisconnect(true);
+        newSong._slideInfo[7].setDisconnect(true);
+        newSong._slideInfo[12].setDisconnect(true);
+        newSong._slideInfo[17].setDisconnect(true);
+        newSong._slideInfo[21].setDisconnect(true);
+        newSong._slideInfo[26].setDisconnect(true);
+        newSong._slideInfo[31].setDisconnect(true);
+        newSong._slideInfo[35].setDisconnect(true);
+        newSong._slideInfo[40].setDisconnect(true);
+        newSong._slideInfo[45].setDisconnect(true);
+        newSong._slideInfo[49].setDisconnect(true);
 
         _songs.Add(newSong);
     }
