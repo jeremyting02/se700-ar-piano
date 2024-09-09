@@ -158,7 +158,7 @@ public class SongController : MonoBehaviour
         // Tick metronome
         if (_time > _last_tick_time + _metronomePerBeat)
         {
-            _metronome.PlayOneShot(_metronome.clip);
+            // _metronome.PlayOneShot(_metronome.clip);
             _last_tick_time += _metronomePerBeat;
         }
 
