@@ -272,8 +272,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _userId: 0
-  _viewPractice: 2
-  _songIndex: 1
+  _viewPractice: 0
+  _songIndex: 0
   _analysisRange: 020000000300000004000000
   _predictionThreshold: 0.5
   _corruptTimeThreshold: 3

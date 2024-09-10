@@ -109,7 +109,7 @@ public class Analyser : MonoBehaviour
 
     private void Start()
     {
-        SaveAndLoad.Load("analysis.dat");
+        SaveAndLoad.Load();
 
         // Generate song info
         GenerateSongs();
@@ -122,10 +122,10 @@ public class Analyser : MonoBehaviour
             ViewPractice();
         }
 
-        if (_prevUserId != _userId || !SameRange() || _prevSongIndex != _songIndex)
-        {
-            CalculateDependents();
-        }
+        // if (_prevUserId != _userId || !SameRange() || _prevSongIndex != _songIndex)
+        // {
+        //     CalculateDependents();
+        // }
 
         if (Input.GetKeyDown("e"))
         {
@@ -148,7 +148,7 @@ public class Analyser : MonoBehaviour
     {
         Song song = _songs[_songIndex];
 
-        foreach(Transform t in _generationParent.GetComponentsInChildren<Transform>())
+        foreach (Transform t in _generationParent.GetComponentsInChildren<Transform>())
         {
             if (t == _generationParent)
                 continue;
@@ -293,7 +293,7 @@ public class Analyser : MonoBehaviour
 
         int eyeDataCount = practiceIndices.Length;
 
-        foreach(int practiceIndex in practiceIndices)
+        foreach (int practiceIndex in practiceIndices)
         {
             Song song = _songs[_songIndex];
             float beatLength = 1f / song.Tempo;
@@ -334,8 +334,18 @@ public class Analyser : MonoBehaviour
             // Predicted timeframe
             float predictedStart = 0;
             int offsets = 0;
+
+            // DEBUGGING
+            foreach (KeyValuePair<int, Session.PressInfo[]> kvp in pressInfo)
+            {
+                print("KEY " + kvp.Key + " VALUE " + kvp.Value);
+            }
+
             foreach (KeyValuePair<int, Session.PressInfo[]> note in song.KeyPresses)
             {
+                print("note: " + note);
+                print("pressInfo: " + pressInfo);
+
                 foreach (Session.PressInfo noteTiming in note.Value)
                 {
                     // Relative to softstart (inital predictedStart)
@@ -344,18 +354,26 @@ public class Analyser : MonoBehaviour
                     float closestOffset = 99999;
                     float closestDistance = 99999;
 
-                    foreach (Session.PressInfo keyTiming in pressInfo[note.Key])
+                    if (pressInfo.ContainsKey(note.Key))
                     {
-                        // Relative to softstart
-                        float keyStart = keyTiming.Start - softStart;
+                        foreach (Session.PressInfo keyTiming in pressInfo[note.Key])
+                        {
+                            // Relative to softstart
+                            float keyStart = keyTiming.Start - softStart;
 
-                        float offset = keyStart - noteStart;
+                            float offset = keyStart - noteStart;
 
-                        if (Mathf.Abs(offset) > _predictionThreshold || Mathf.Abs(offset) > closestDistance)
-                            continue;
+                            if (Mathf.Abs(offset) > _predictionThreshold || Mathf.Abs(offset) > closestDistance)
+                                continue;
 
-                        closestOffset = offset;
-                        closestDistance = Mathf.Abs(offset);
+                            closestOffset = offset;
+                            closestDistance = Mathf.Abs(offset);
+                        }
+                    }
+                    else
+                    {
+                        // Handle the case where the key does not exist
+                        Debug.LogWarning($"Key {note.Key} not found in pressInfo.");
                     }
 
                     if (closestOffset == 99999)
@@ -445,7 +463,7 @@ public class Analyser : MonoBehaviour
                     if (!mappedEnds.Contains(i)) EEC++;
                 }
             }
-            foreach(KeyValuePair<int, Session.PressInfo[]> keyPresses in pressInfo)
+            foreach (KeyValuePair<int, Session.PressInfo[]> keyPresses in pressInfo)
             {
                 if (song.KeyPresses.ContainsKey(keyPresses.Key) || !(keyPresses.Key >= 23 && keyPresses.Key <= 105))
                     continue;
@@ -703,7 +721,7 @@ public class Analyser : MonoBehaviour
 
     void PlayEyeData()
     {
-        Debug.LogError("Playing eye data from practice: " + _viewPractice);
+        Debug.Log("Playing eye data from practice: " + _viewPractice);
 
         Session session = SaveAndLoad.data.GetSession(_userId);
         session.PlayEyeData(false, _viewPredictedStart, _viewPredictedEnd);
