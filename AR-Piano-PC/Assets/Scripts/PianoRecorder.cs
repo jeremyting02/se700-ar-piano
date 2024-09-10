@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 using MidiJack;
 
 public class PianoRecorder : MonoBehaviour
@@ -12,6 +13,8 @@ public class PianoRecorder : MonoBehaviour
 
     private int sessionIndex = -1;
     private float recordingStartTime = 0f; // Time recording started, reset for each recording session
+
+    [SerializeField] Image _recordingImage;
 
     [Serializable]
     public class KeyPressData
@@ -64,6 +67,15 @@ public class PianoRecorder : MonoBehaviour
                 StopRecording(); // Stop the current recording and save the data
             }
         }
+
+        if (recording)
+        {
+            _recordingImage.color = Color.green;
+        }
+        else
+        {
+            _recordingImage.color = Color.white;
+        }
     }
 
     // Start a new recording session
@@ -99,7 +111,7 @@ public class PianoRecorder : MonoBehaviour
             // Calculate the key press start time relative to the recording start time
             KeyPressData keyPress = new KeyPressData(note, Time.time - recordingStartTime);
             activeKeys[note] = keyPress;
-            Debug.Log($"Key {note} pressed at {keyPress.startTime}");
+            // Debug.Log($"Key {note} pressed at {keyPress.startTime}");
         }
     }
 
@@ -113,7 +125,7 @@ public class PianoRecorder : MonoBehaviour
             keyPress.SetLength(Time.time - recordingStartTime);
             keyPressDataList.Add(keyPress);
             activeKeys.Remove(note);
-            Debug.Log($"Key {note} released, duration {keyPress.lengthPressed}");
+            // Debug.Log($"Key {note} released, duration {keyPress.lengthPressed}");
         }
     }
 
