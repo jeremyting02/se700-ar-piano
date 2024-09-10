@@ -10,6 +10,8 @@ public class PianoRecorder : MonoBehaviour
     private Dictionary<int, KeyPressData> activeKeys = new Dictionary<int, KeyPressData>(); // Tracks active keys and their start times
     private List<KeyPressData> keyPressDataList = new List<KeyPressData>();
 
+    private int sessionIndex = -1;
+
     [Serializable]
     public class KeyPressData
     {
@@ -28,6 +30,11 @@ public class PianoRecorder : MonoBehaviour
         {
             this.lengthPressed = endTime - this.startTime;
         }
+    }
+
+    private void Start()
+    {
+        sessionIndex = SaveAndLoad.data.GetNextSessionIndex(); // Retrieve the session index from SaveAndLoad
     }
 
     private void OnEnable()
@@ -84,7 +91,17 @@ public class PianoRecorder : MonoBehaviour
     // Save the recorded key press data to a CSV file
     void SaveToCsv()
     {
-        string filePath = Application.persistentDataPath + "/piano_recording.csv";
+        // Generate the base filename using the session index
+        string baseFileName = $"piano_recording_session_{sessionIndex}.csv";
+        string filePath = Path.Combine(Application.persistentDataPath, baseFileName);
+
+        // Check if the file exists, and append a number to avoid overwriting
+        int fileSuffix = 1;
+        while (File.Exists(filePath))
+        {
+            filePath = Path.Combine(Application.persistentDataPath, $"piano_recording_session_{sessionIndex}_{fileSuffix}.csv");
+            fileSuffix++;
+        }
 
         using (StreamWriter writer = new StreamWriter(filePath))
         {
