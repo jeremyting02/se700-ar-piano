@@ -11,6 +11,7 @@ public class PianoRecorder : MonoBehaviour
     private List<KeyPressData> keyPressDataList = new List<KeyPressData>();
 
     private int sessionIndex = -1;
+    private float recordingStartTime = 0f; // Time recording started, reset for each recording session
 
     [Serializable]
     public class KeyPressData
@@ -54,14 +55,40 @@ public class PianoRecorder : MonoBehaviour
         // Toggle recording with the 'R' key
         if (Input.GetKeyDown(KeyCode.R))
         {
-            recording = !recording;
-
             if (!recording)
             {
-                // Save recorded data when recording stops
-                SaveToCsv();
+                StartRecording(); // Start a new recording
+            }
+            else
+            {
+                StopRecording(); // Stop the current recording and save the data
             }
         }
+    }
+
+    // Start a new recording session
+    private void StartRecording()
+    {
+        recording = true;
+
+        // Clear previous recording data
+        activeKeys.Clear();
+        keyPressDataList.Clear();
+
+        // Reset the recording start time
+        recordingStartTime = Time.time;
+
+        Debug.Log("Recording started...");
+    }
+
+    // Stop the recording and save the data
+    private void StopRecording()
+    {
+        recording = false;
+
+        // Save the recorded data when recording stops
+        SaveToCsv();
+        Debug.Log("Recording stopped and saved.");
     }
 
     // MIDI key press event handler
@@ -69,9 +96,10 @@ public class PianoRecorder : MonoBehaviour
     {
         if (recording && !activeKeys.ContainsKey(note))
         {
-            KeyPressData keyPress = new KeyPressData(note, Time.time);
+            // Calculate the key press start time relative to the recording start time
+            KeyPressData keyPress = new KeyPressData(note, Time.time - recordingStartTime);
             activeKeys[note] = keyPress;
-            // Debug.Log($"Key {note} pressed at {keyPress.startTime}");
+            Debug.Log($"Key {note} pressed at {keyPress.startTime}");
         }
     }
 
@@ -81,10 +109,11 @@ public class PianoRecorder : MonoBehaviour
         if (recording && activeKeys.ContainsKey(note))
         {
             KeyPressData keyPress = activeKeys[note];
-            keyPress.SetLength(Time.time); // Calculate duration of key press
+            // Calculate the duration of the key press relative to the recording start time
+            keyPress.SetLength(Time.time - recordingStartTime);
             keyPressDataList.Add(keyPress);
             activeKeys.Remove(note);
-            // Debug.Log($"Key {note} released at {Time.time}, duration {keyPress.lengthPressed}");
+            Debug.Log($"Key {note} released, duration {keyPress.lengthPressed}");
         }
     }
 
