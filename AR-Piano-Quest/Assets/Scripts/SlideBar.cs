@@ -17,7 +17,7 @@ public class SlideBar : MonoBehaviour
 
     public void Initialise(float time, float width, float barMoveDepth, float beatLength, float barThickness, float barHover, float beatsPerSecond)
     {
-        transform.localPosition += new Vector3(0, barHover, 0);
+        transform.localPosition = new Vector3(0, barHover, 0);
         transform.localScale = new Vector3(width, 1, 1);
 
         _barMoveDepth = barMoveDepth;
