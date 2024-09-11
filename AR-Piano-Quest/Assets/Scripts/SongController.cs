@@ -215,13 +215,13 @@ public class SongController : MonoBehaviour
 
         Tutorial(slow);
 
-        Cuckoo(fast);
-        AuClairDeLaLune(slow);
-        ObLaDiLaDa(fast);
+        Cuckoo(slow);
+        // AuClairDeLaLune(slow);
+        // ObLaDiLaDa(fast);
 
         AlleMeineEntchen(slow);
-        BeutifulBrownEyes(fast);
-        GilligansIsle(slow);
+        // BeutifulBrownEyes(fast);
+        // GilligansIsle(slow);
     }
 
     void Tutorial(float tempo)
@@ -292,72 +292,72 @@ public class SongController : MonoBehaviour
         _songs.Add(newSong);
     }
 
-    void AuClairDeLaLune(float tempo)
-    {
-        Song newSong = new Song(tempo, 64, 4, 4, 2);
+    // void AuClairDeLaLune(float tempo)
+    // {
+    //     Song newSong = new Song(tempo, 64, 4, 4, 2);
 
-        newSong.InputNotes(34 + 12, 0, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
-        newSong.InputNotes(36 + 12, 0, 3, 1, 6, 2, 10, 1, 11, 1);
-        newSong.InputNotes(38 + 12, 0, 4, 2, 9, 1);
+    //     newSong.InputNotes(34 + 12, 0, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
+    //     newSong.InputNotes(36 + 12, 0, 3, 1, 6, 2, 10, 1, 11, 1);
+    //     newSong.InputNotes(38 + 12, 0, 4, 2, 9, 1);
 
-        newSong.InputNotes(34 + 12, 16, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
-        newSong.InputNotes(36 + 12, 16, 3, 1, 6, 2, 10, 1, 11, 1);
-        newSong.InputNotes(38 + 12, 16, 4, 2, 9, 1);
+    //     newSong.InputNotes(34 + 12, 16, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
+    //     newSong.InputNotes(36 + 12, 16, 3, 1, 6, 2, 10, 1, 11, 1);
+    //     newSong.InputNotes(38 + 12, 16, 4, 2, 9, 1);
 
-        newSong.InputNotes(36 + 12, 32, 0, 1, 1, 1, 2, 1, 3, 1, 8, 1);
-        newSong.InputNotes(31 + 12, 32, 4, 2, 6, 2, 11, 1);
-        newSong.InputNotes(34 + 12, 32, 9, 1);
-        newSong.InputNotes(33 + 12, 32, 10, 1);
-        newSong.InputNotes(29 + 12, 32, 12, 4);
+    //     newSong.InputNotes(36 + 12, 32, 0, 1, 1, 1, 2, 1, 3, 1, 8, 1);
+    //     newSong.InputNotes(31 + 12, 32, 4, 2, 6, 2, 11, 1);
+    //     newSong.InputNotes(34 + 12, 32, 9, 1);
+    //     newSong.InputNotes(33 + 12, 32, 10, 1);
+    //     newSong.InputNotes(29 + 12, 32, 12, 4);
 
-        newSong.InputNotes(34 + 12, 48, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
-        newSong.InputNotes(36 + 12, 48, 3, 1, 6, 2, 10, 1, 11, 1);
-        newSong.InputNotes(38 + 12, 48, 4, 2, 9, 1);
+    //     newSong.InputNotes(34 + 12, 48, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
+    //     newSong.InputNotes(36 + 12, 48, 3, 1, 6, 2, 10, 1, 11, 1);
+    //     newSong.InputNotes(38 + 12, 48, 4, 2, 9, 1);
 
-        newSong._slideInfo[5].setDisconnect(true);
-        newSong._slideInfo[10].setDisconnect(true);
-        newSong._slideInfo[16].setDisconnect(true);
-        newSong._slideInfo[21].setDisconnect(true);
-        newSong._slideInfo[27].setDisconnect(true);
-        newSong._slideInfo[32].setDisconnect(true);
-        newSong._slideInfo[38].setDisconnect(true);
+    //     newSong._slideInfo[5].setDisconnect(true);
+    //     newSong._slideInfo[10].setDisconnect(true);
+    //     newSong._slideInfo[16].setDisconnect(true);
+    //     newSong._slideInfo[21].setDisconnect(true);
+    //     newSong._slideInfo[27].setDisconnect(true);
+    //     newSong._slideInfo[32].setDisconnect(true);
+    //     newSong._slideInfo[38].setDisconnect(true);
 
-        _songs.Add(newSong);
-    }
+    //     _songs.Add(newSong);
+    // }
 
-    void ObLaDiLaDa(float tempo)
-    {
-        Song newSong = new Song(tempo, 64, 4, 4, 2);
+    // void ObLaDiLaDa(float tempo)
+    // {
+    //     Song newSong = new Song(tempo, 64, 4, 4, 2);
 
-        newSong.InputNotes(48, 0, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1);
-        newSong.InputNotes(46, 0, 6, 1, 9, 2, 11, 5);
-        newSong.InputNotes(44, 0, 7, 1);
-        newSong.InputNotes(43, 0, 8, 1);
+    //     newSong.InputNotes(48, 0, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1);
+    //     newSong.InputNotes(46, 0, 6, 1, 9, 2, 11, 5);
+    //     newSong.InputNotes(44, 0, 7, 1);
+    //     newSong.InputNotes(43, 0, 8, 1);
 
-        newSong.InputNotes(49, 16, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1);
-        newSong.InputNotes(48, 16, 6, 1);
-        newSong.InputNotes(46, 16, 7, 1);
-        newSong.InputNotes(44, 16, 8, 8);
+    //     newSong.InputNotes(49, 16, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1);
+    //     newSong.InputNotes(48, 16, 6, 1);
+    //     newSong.InputNotes(46, 16, 7, 1);
+    //     newSong.InputNotes(44, 16, 8, 8);
 
-        newSong.InputNotes(49, 32, 6, 1, 8, 1, 15, 1, 18, 1, 21, 1);
-        newSong.InputNotes(48, 32, 7, 1, 16, 1, 17, 1, 19, 1, 22, 1);
-        newSong.InputNotes(46, 32, 20, 1, 23, 1);
-        newSong.InputNotes(44, 32, 24, 8);
-        newSong.InputNotes(51, 32, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 9, 2, 14, 1);
-        newSong.InputNotes(53, 32, 11, 2, 13, 1);
+    //     newSong.InputNotes(49, 32, 6, 1, 8, 1, 15, 1, 18, 1, 21, 1);
+    //     newSong.InputNotes(48, 32, 7, 1, 16, 1, 17, 1, 19, 1, 22, 1);
+    //     newSong.InputNotes(46, 32, 20, 1, 23, 1);
+    //     newSong.InputNotes(44, 32, 24, 8);
+    //     newSong.InputNotes(51, 32, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 9, 2, 14, 1);
+    //     newSong.InputNotes(53, 32, 11, 2, 13, 1);
 
-        newSong._slideInfo[10].setDisconnect(true);
-        newSong._slideInfo[19].setDisconnect(true);
-        newSong._slideInfo[30].setDisconnect(true);
+    //     newSong._slideInfo[10].setDisconnect(true);
+    //     newSong._slideInfo[19].setDisconnect(true);
+    //     newSong._slideInfo[30].setDisconnect(true);
 
-        newSong._slideInfo[5].setDisconnect(true);
-        newSong._slideInfo[16].setDisconnect(true);
-        newSong._slideInfo[25].setDisconnect(true);
-        newSong._slideInfo[35].setDisconnect(true);
-        newSong._slideInfo[39].setDisconnect(true);
+    //     newSong._slideInfo[5].setDisconnect(true);
+    //     newSong._slideInfo[16].setDisconnect(true);
+    //     newSong._slideInfo[25].setDisconnect(true);
+    //     newSong._slideInfo[35].setDisconnect(true);
+    //     newSong._slideInfo[39].setDisconnect(true);
 
-        _songs.Add(newSong);
-    }
+    //     _songs.Add(newSong);
+    // }
 
     void AlleMeineEntchen(float tempo)
     {
@@ -398,85 +398,85 @@ public class SongController : MonoBehaviour
         _songs.Add(newSong);
     }
 
-    void BeutifulBrownEyes(float tempo)
-    {
-        Song newSong = new Song(tempo, 48 - 2, 3, 4, 2);
+    // void BeutifulBrownEyes(float tempo)
+    // {
+    //     Song newSong = new Song(tempo, 48 - 2, 3, 4, 2);
 
-        newSong.InputNotes(50, 0 - 2, 0, 1, 1, 1, 2, 1, 5, 1);
-        newSong.InputNotes(46, 0 - 2, 3, 1);
-        newSong.InputNotes(48, 0 - 2, 4, 1);
-        newSong.InputNotes(51, 0 - 2, 6, 1, 7, 2, 9, 3);
+    //     newSong.InputNotes(50, 0 - 2, 0, 1, 1, 1, 2, 1, 5, 1);
+    //     newSong.InputNotes(46, 0 - 2, 3, 1);
+    //     newSong.InputNotes(48, 0 - 2, 4, 1);
+    //     newSong.InputNotes(51, 0 - 2, 6, 1, 7, 2, 9, 3);
 
-        newSong.InputNotes(50, 12 - 2, 0, 1, 1, 1, 2, 1, 5, 1);
-        newSong.InputNotes(46, 12 - 2, 3, 1);
-        newSong.InputNotes(48, 12 - 2, 4, 1, 6, 3);
-        newSong.InputNotes(53, 12 - 2, 9, 3);
+    //     newSong.InputNotes(50, 12 - 2, 0, 1, 1, 1, 2, 1, 5, 1);
+    //     newSong.InputNotes(46, 12 - 2, 3, 1);
+    //     newSong.InputNotes(48, 12 - 2, 4, 1, 6, 3);
+    //     newSong.InputNotes(53, 12 - 2, 9, 3);
 
-        newSong.InputNotes(50, 24 - 2, 0, 1, 1, 1, 2, 1, 5, 1);
-        newSong.InputNotes(46, 24 - 2, 3, 1);
-        newSong.InputNotes(48, 24 - 2, 4, 1);
-        newSong.InputNotes(51, 24 - 2, 6, 1, 7, 2, 9, 3);
+    //     newSong.InputNotes(50, 24 - 2, 0, 1, 1, 1, 2, 1, 5, 1);
+    //     newSong.InputNotes(46, 24 - 2, 3, 1);
+    //     newSong.InputNotes(48, 24 - 2, 4, 1);
+    //     newSong.InputNotes(51, 24 - 2, 6, 1, 7, 2, 9, 3);
 
-        newSong.InputNotes(50, 36 - 2, 2, 1, 4, 1);
-        newSong.InputNotes(46, 36 - 2, 6, 6);
-        newSong.InputNotes(48, 36 - 2, 1, 1, 5, 1);
-        newSong.InputNotes(51, 36 - 2, 3, 1);
-        newSong.InputNotes(53, 36 - 2, 0, 1);
+    //     newSong.InputNotes(50, 36 - 2, 2, 1, 4, 1);
+    //     newSong.InputNotes(46, 36 - 2, 6, 6);
+    //     newSong.InputNotes(48, 36 - 2, 1, 1, 5, 1);
+    //     newSong.InputNotes(51, 36 - 2, 3, 1);
+    //     newSong.InputNotes(53, 36 - 2, 0, 1);
 
-        newSong._slideInfo[8].setDisconnect(true);
-        newSong._slideInfo[16].setDisconnect(true);
-        newSong._slideInfo[25].setDisconnect(true);
+    //     newSong._slideInfo[8].setDisconnect(true);
+    //     newSong._slideInfo[16].setDisconnect(true);
+    //     newSong._slideInfo[25].setDisconnect(true);
 
-        _songs.Add(newSong);
-    }
+    //     _songs.Add(newSong);
+    // }
 
-    void GilligansIsle(float tempo)
-    {
-        Song newSong = new Song(tempo, 64, 4, 4, 2);
+    // void GilligansIsle(float tempo)
+    // {
+    //     Song newSong = new Song(tempo, 64, 4, 4, 2);
 
-        newSong.InputNotes(41, 0, 0, 1, 8, 1);
-        newSong.InputNotes(48, 0, 1, 1, 2, 1, 3, 1, 9, 1, 10, 1, 11, 1);
-        newSong.InputNotes(46, 0, 4, 1, 12, 3);
-        newSong.InputNotes(43, 0, 5, 1);
-        newSong.InputNotes(39, 0, 6, 1, 7, 1, 15, 1);
+    //     newSong.InputNotes(41, 0, 0, 1, 8, 1);
+    //     newSong.InputNotes(48, 0, 1, 1, 2, 1, 3, 1, 9, 1, 10, 1, 11, 1);
+    //     newSong.InputNotes(46, 0, 4, 1, 12, 3);
+    //     newSong.InputNotes(43, 0, 5, 1);
+    //     newSong.InputNotes(39, 0, 6, 1, 7, 1, 15, 1);
 
-        newSong.InputNotes(41, 16, 0, 1, 12, 3);
-        newSong.InputNotes(48, 16, 1, 1, 2, 1, 3, 1, 15, 1);
-        newSong.InputNotes(46, 16, 4, 1, 7, 1);
-        newSong.InputNotes(44, 16, 8, 1, 9, 1);
-        newSong.InputNotes(43, 16, 10, 1);
-        newSong.InputNotes(39, 16, 11, 1);
-        newSong.InputNotes(51, 16, 5, 1, 6, 1);
+    //     newSong.InputNotes(41, 16, 0, 1, 12, 3);
+    //     newSong.InputNotes(48, 16, 1, 1, 2, 1, 3, 1, 15, 1);
+    //     newSong.InputNotes(46, 16, 4, 1, 7, 1);
+    //     newSong.InputNotes(44, 16, 8, 1, 9, 1);
+    //     newSong.InputNotes(43, 16, 10, 1);
+    //     newSong.InputNotes(39, 16, 11, 1);
+    //     newSong.InputNotes(51, 16, 5, 1, 6, 1);
 
-        newSong.InputNotes(41, 32, 0, 1, 8, 1);
-        newSong.InputNotes(48, 32, 1, 1, 2, 1, 3, 1, 9, 1, 10, 1, 11, 1);
-        newSong.InputNotes(46, 32, 4, 1, 12, 3);
-        newSong.InputNotes(43, 32, 5, 1);
-        newSong.InputNotes(39, 32, 6, 1, 7, 1, 15, 1);
+    //     newSong.InputNotes(41, 32, 0, 1, 8, 1);
+    //     newSong.InputNotes(48, 32, 1, 1, 2, 1, 3, 1, 9, 1, 10, 1, 11, 1);
+    //     newSong.InputNotes(46, 32, 4, 1, 12, 3);
+    //     newSong.InputNotes(43, 32, 5, 1);
+    //     newSong.InputNotes(39, 32, 6, 1, 7, 1, 15, 1);
 
-        newSong.InputNotes(41, 48, 0, 1, 12, 4);
-        newSong.InputNotes(48, 48, 1, 1, 2, 1, 3, 1);
-        newSong.InputNotes(46, 48, 4, 1, 7, 1);
-        newSong.InputNotes(44, 48, 8, 2);
-        newSong.InputNotes(43, 48, 10, 1);
-        newSong.InputNotes(39, 48, 11, 1);
-        newSong.InputNotes(51, 48, 5, 1, 6, 1);
+    //     newSong.InputNotes(41, 48, 0, 1, 12, 4);
+    //     newSong.InputNotes(48, 48, 1, 1, 2, 1, 3, 1);
+    //     newSong.InputNotes(46, 48, 4, 1, 7, 1);
+    //     newSong.InputNotes(44, 48, 8, 2);
+    //     newSong.InputNotes(43, 48, 10, 1);
+    //     newSong.InputNotes(39, 48, 11, 1);
+    //     newSong.InputNotes(51, 48, 5, 1, 6, 1);
 
 
-        newSong._slideInfo[3].setDisconnect(true);
-        newSong._slideInfo[7].setDisconnect(true);
-        newSong._slideInfo[12].setDisconnect(true);
-        newSong._slideInfo[17].setDisconnect(true);
-        newSong._slideInfo[21].setDisconnect(true);
-        newSong._slideInfo[26].setDisconnect(true);
-        newSong._slideInfo[31].setDisconnect(true);
-        newSong._slideInfo[35].setDisconnect(true);
-        newSong._slideInfo[40].setDisconnect(true);
-        newSong._slideInfo[45].setDisconnect(true);
-        newSong._slideInfo[49].setDisconnect(true);
+    //     newSong._slideInfo[3].setDisconnect(true);
+    //     newSong._slideInfo[7].setDisconnect(true);
+    //     newSong._slideInfo[12].setDisconnect(true);
+    //     newSong._slideInfo[17].setDisconnect(true);
+    //     newSong._slideInfo[21].setDisconnect(true);
+    //     newSong._slideInfo[26].setDisconnect(true);
+    //     newSong._slideInfo[31].setDisconnect(true);
+    //     newSong._slideInfo[35].setDisconnect(true);
+    //     newSong._slideInfo[40].setDisconnect(true);
+    //     newSong._slideInfo[45].setDisconnect(true);
+    //     newSong._slideInfo[49].setDisconnect(true);
 
-        _songs.Add(newSong);
-    }
+    //     _songs.Add(newSong);
+    // }
 
     // void JingleBells(float tempo)
     // {

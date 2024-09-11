@@ -796,13 +796,13 @@ public class Analyser : MonoBehaviour
 
         Tutorial(slow);
 
-        Cuckoo(fast);
-        AuClairDeLaLune(slow);
-        ObLaDiLaDa(fast);
+        Cuckoo(slow);
+        // AuClairDeLaLune(slow);
+        // ObLaDiLaDa(fast);
 
         AlleMeineEntchen(slow);
-        BeutifulBrownEyes(fast);
-        GilligansIsle(slow);
+        // BeutifulBrownEyes(fast);
+        // GilligansIsle(slow);
     }
 
     void Tutorial(float tempo)
@@ -862,54 +862,54 @@ public class Analyser : MonoBehaviour
         _songs.Add(newSong);
     }
 
-    void AuClairDeLaLune(float tempo)
-    {
-        Song newSong = new Song(tempo, 64);
+    // void AuClairDeLaLune(float tempo)
+    // {
+    //     Song newSong = new Song(tempo, 64);
 
-        newSong.InputNotes(34 + 12, 0, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
-        newSong.InputNotes(36 + 12, 0, 3, 1, 6, 2, 10, 1, 11, 1);
-        newSong.InputNotes(38 + 12, 0, 4, 2, 9, 1);
+    //     newSong.InputNotes(34 + 12, 0, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
+    //     newSong.InputNotes(36 + 12, 0, 3, 1, 6, 2, 10, 1, 11, 1);
+    //     newSong.InputNotes(38 + 12, 0, 4, 2, 9, 1);
 
-        newSong.InputNotes(34 + 12, 16, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
-        newSong.InputNotes(36 + 12, 16, 3, 1, 6, 2, 10, 1, 11, 1);
-        newSong.InputNotes(38 + 12, 16, 4, 2, 9, 1);
+    //     newSong.InputNotes(34 + 12, 16, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
+    //     newSong.InputNotes(36 + 12, 16, 3, 1, 6, 2, 10, 1, 11, 1);
+    //     newSong.InputNotes(38 + 12, 16, 4, 2, 9, 1);
 
-        newSong.InputNotes(36 + 12, 32, 0, 1, 1, 1, 2, 1, 3, 1, 8, 1);
-        newSong.InputNotes(31 + 12, 32, 4, 2, 6, 2, 11, 1);
-        newSong.InputNotes(34 + 12, 32, 9, 1);
-        newSong.InputNotes(33 + 12, 32, 10, 1);
-        newSong.InputNotes(29 + 12, 32, 12, 4);
+    //     newSong.InputNotes(36 + 12, 32, 0, 1, 1, 1, 2, 1, 3, 1, 8, 1);
+    //     newSong.InputNotes(31 + 12, 32, 4, 2, 6, 2, 11, 1);
+    //     newSong.InputNotes(34 + 12, 32, 9, 1);
+    //     newSong.InputNotes(33 + 12, 32, 10, 1);
+    //     newSong.InputNotes(29 + 12, 32, 12, 4);
 
-        newSong.InputNotes(34 + 12, 48, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
-        newSong.InputNotes(36 + 12, 48, 3, 1, 6, 2, 10, 1, 11, 1);
-        newSong.InputNotes(38 + 12, 48, 4, 2, 9, 1);
+    //     newSong.InputNotes(34 + 12, 48, 0, 1, 1, 1, 2, 1, 8, 1, 12, 4);
+    //     newSong.InputNotes(36 + 12, 48, 3, 1, 6, 2, 10, 1, 11, 1);
+    //     newSong.InputNotes(38 + 12, 48, 4, 2, 9, 1);
 
-        _songs.Add(newSong);
-    }
+    //     _songs.Add(newSong);
+    // }
 
-    void ObLaDiLaDa(float tempo)
-    {
-        Song newSong = new Song(tempo, 64);
+    // void ObLaDiLaDa(float tempo)
+    // {
+    //     Song newSong = new Song(tempo, 64);
 
-        newSong.InputNotes(48, 0, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1);
-        newSong.InputNotes(46, 0, 6, 1, 9, 2, 11, 5);
-        newSong.InputNotes(44, 0, 7, 1);
-        newSong.InputNotes(43, 0, 8, 1);
+    //     newSong.InputNotes(48, 0, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1);
+    //     newSong.InputNotes(46, 0, 6, 1, 9, 2, 11, 5);
+    //     newSong.InputNotes(44, 0, 7, 1);
+    //     newSong.InputNotes(43, 0, 8, 1);
 
-        newSong.InputNotes(49, 16, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1);
-        newSong.InputNotes(48, 16, 6, 1);
-        newSong.InputNotes(46, 16, 7, 1);
-        newSong.InputNotes(44, 16, 8, 8);
+    //     newSong.InputNotes(49, 16, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1);
+    //     newSong.InputNotes(48, 16, 6, 1);
+    //     newSong.InputNotes(46, 16, 7, 1);
+    //     newSong.InputNotes(44, 16, 8, 8);
 
-        newSong.InputNotes(49, 32, 6, 1, 8, 1, 15, 1, 18, 1, 21, 1);
-        newSong.InputNotes(48, 32, 7, 1, 16, 1, 17, 1, 19, 1, 22, 1);
-        newSong.InputNotes(46, 32, 20, 1, 23, 1);
-        newSong.InputNotes(44, 32, 24, 8);
-        newSong.InputNotes(51, 32, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 9, 2, 14, 1);
-        newSong.InputNotes(53, 32, 11, 2, 13, 1);
+    //     newSong.InputNotes(49, 32, 6, 1, 8, 1, 15, 1, 18, 1, 21, 1);
+    //     newSong.InputNotes(48, 32, 7, 1, 16, 1, 17, 1, 19, 1, 22, 1);
+    //     newSong.InputNotes(46, 32, 20, 1, 23, 1);
+    //     newSong.InputNotes(44, 32, 24, 8);
+    //     newSong.InputNotes(51, 32, 0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 9, 2, 14, 1);
+    //     newSong.InputNotes(53, 32, 11, 2, 13, 1);
 
-        _songs.Add(newSong);
-    }
+    //     _songs.Add(newSong);
+    // }
 
     void AlleMeineEntchen(float tempo)
     {
@@ -942,69 +942,69 @@ public class Analyser : MonoBehaviour
         _songs.Add(newSong);
     }
 
-    void BeutifulBrownEyes(float tempo)
-    {
-        Song newSong = new Song(tempo, 48);
+    // void BeutifulBrownEyes(float tempo)
+    // {
+    //     Song newSong = new Song(tempo, 48);
 
-        newSong.InputNotes(50, 0, 0, 1, 1, 1, 2, 1, 5, 1);
-        newSong.InputNotes(46, 0, 3, 1);
-        newSong.InputNotes(48, 0, 4, 1);
-        newSong.InputNotes(51, 0, 6, 1, 7, 2, 9, 3);
+    //     newSong.InputNotes(50, 0, 0, 1, 1, 1, 2, 1, 5, 1);
+    //     newSong.InputNotes(46, 0, 3, 1);
+    //     newSong.InputNotes(48, 0, 4, 1);
+    //     newSong.InputNotes(51, 0, 6, 1, 7, 2, 9, 3);
 
-        newSong.InputNotes(50, 12, 0, 1, 1, 1, 2, 1, 5, 1);
-        newSong.InputNotes(46, 12, 3, 1);
-        newSong.InputNotes(48, 12, 4, 1, 6, 3);
-        newSong.InputNotes(53, 12, 9, 3);
+    //     newSong.InputNotes(50, 12, 0, 1, 1, 1, 2, 1, 5, 1);
+    //     newSong.InputNotes(46, 12, 3, 1);
+    //     newSong.InputNotes(48, 12, 4, 1, 6, 3);
+    //     newSong.InputNotes(53, 12, 9, 3);
 
-        newSong.InputNotes(50, 24, 0, 1, 1, 1, 2, 1, 5, 1);
-        newSong.InputNotes(46, 24, 3, 1);
-        newSong.InputNotes(48, 24, 4, 1);
-        newSong.InputNotes(51, 24, 6, 1, 7, 2, 9, 3);
+    //     newSong.InputNotes(50, 24, 0, 1, 1, 1, 2, 1, 5, 1);
+    //     newSong.InputNotes(46, 24, 3, 1);
+    //     newSong.InputNotes(48, 24, 4, 1);
+    //     newSong.InputNotes(51, 24, 6, 1, 7, 2, 9, 3);
 
-        newSong.InputNotes(50, 36, 2, 1, 4, 1);
-        newSong.InputNotes(46, 36, 6, 6);
-        newSong.InputNotes(48, 36, 1, 1, 5, 1);
-        newSong.InputNotes(51, 36, 3, 1);
-        newSong.InputNotes(53, 36, 0, 1);
+    //     newSong.InputNotes(50, 36, 2, 1, 4, 1);
+    //     newSong.InputNotes(46, 36, 6, 6);
+    //     newSong.InputNotes(48, 36, 1, 1, 5, 1);
+    //     newSong.InputNotes(51, 36, 3, 1);
+    //     newSong.InputNotes(53, 36, 0, 1);
 
-        _songs.Add(newSong);
-    }
+    //     _songs.Add(newSong);
+    // }
 
 
-    void GilligansIsle(float tempo)
-    {
-        Song newSong = new Song(tempo, 64);
+    // void GilligansIsle(float tempo)
+    // {
+    //     Song newSong = new Song(tempo, 64);
 
-        newSong.InputNotes(41, 0, 0, 1, 8, 1);
-        newSong.InputNotes(48, 0, 1, 1, 2, 1, 3, 1, 9, 1, 10, 1, 11, 1);
-        newSong.InputNotes(46, 0, 4, 1, 12, 3);
-        newSong.InputNotes(43, 0, 5, 1);
-        newSong.InputNotes(39, 0, 6, 1, 7, 1, 15, 1);
+    //     newSong.InputNotes(41, 0, 0, 1, 8, 1);
+    //     newSong.InputNotes(48, 0, 1, 1, 2, 1, 3, 1, 9, 1, 10, 1, 11, 1);
+    //     newSong.InputNotes(46, 0, 4, 1, 12, 3);
+    //     newSong.InputNotes(43, 0, 5, 1);
+    //     newSong.InputNotes(39, 0, 6, 1, 7, 1, 15, 1);
 
-        newSong.InputNotes(41, 16, 0, 1, 12, 3);
-        newSong.InputNotes(48, 16, 1, 1, 2, 1, 3, 1, 15, 1);
-        newSong.InputNotes(46, 16, 4, 1, 7, 1);
-        newSong.InputNotes(44, 16, 8, 1, 9, 1);
-        newSong.InputNotes(43, 16, 10, 1);
-        newSong.InputNotes(39, 16, 11, 1);
-        newSong.InputNotes(51, 16, 5, 1, 6, 1);
+    //     newSong.InputNotes(41, 16, 0, 1, 12, 3);
+    //     newSong.InputNotes(48, 16, 1, 1, 2, 1, 3, 1, 15, 1);
+    //     newSong.InputNotes(46, 16, 4, 1, 7, 1);
+    //     newSong.InputNotes(44, 16, 8, 1, 9, 1);
+    //     newSong.InputNotes(43, 16, 10, 1);
+    //     newSong.InputNotes(39, 16, 11, 1);
+    //     newSong.InputNotes(51, 16, 5, 1, 6, 1);
 
-        newSong.InputNotes(41, 32, 0, 1, 8, 1);
-        newSong.InputNotes(48, 32, 1, 1, 2, 1, 3, 1, 9, 1, 10, 1, 11, 1);
-        newSong.InputNotes(46, 32, 4, 1, 12, 3);
-        newSong.InputNotes(43, 32, 5, 1);
-        newSong.InputNotes(39, 32, 6, 1, 7, 1, 15, 1);
+    //     newSong.InputNotes(41, 32, 0, 1, 8, 1);
+    //     newSong.InputNotes(48, 32, 1, 1, 2, 1, 3, 1, 9, 1, 10, 1, 11, 1);
+    //     newSong.InputNotes(46, 32, 4, 1, 12, 3);
+    //     newSong.InputNotes(43, 32, 5, 1);
+    //     newSong.InputNotes(39, 32, 6, 1, 7, 1, 15, 1);
 
-        newSong.InputNotes(41, 48, 0, 1, 12, 4);
-        newSong.InputNotes(48, 48, 1, 1, 2, 1, 3, 1);
-        newSong.InputNotes(46, 48, 4, 1, 7, 1);
-        newSong.InputNotes(44, 48, 8, 2);
-        newSong.InputNotes(43, 48, 10, 1);
-        newSong.InputNotes(39, 48, 11, 1);
-        newSong.InputNotes(51, 48, 5, 1, 6, 1);
+    //     newSong.InputNotes(41, 48, 0, 1, 12, 4);
+    //     newSong.InputNotes(48, 48, 1, 1, 2, 1, 3, 1);
+    //     newSong.InputNotes(46, 48, 4, 1, 7, 1);
+    //     newSong.InputNotes(44, 48, 8, 2);
+    //     newSong.InputNotes(43, 48, 10, 1);
+    //     newSong.InputNotes(39, 48, 11, 1);
+    //     newSong.InputNotes(51, 48, 5, 1, 6, 1);
 
-        _songs.Add(newSong);
-    }
+    //     _songs.Add(newSong);
+    // }
 
     #endregion
 }

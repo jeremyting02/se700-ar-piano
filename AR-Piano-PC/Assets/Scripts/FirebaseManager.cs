@@ -80,7 +80,7 @@ public class FirebaseManager : MonoBehaviour
             else if (task.IsCompleted)
             {
                 DataSnapshot snapshop = task.Result;
-                reference.Child("songIndex").SetValueAsync((int.Parse(snapshop.Value.ToString()) + 1) % 7);
+                reference.Child("songIndex").SetValueAsync((int.Parse(snapshop.Value.ToString()) + 1) % 3);
             }
         });
     }
