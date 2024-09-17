@@ -211,7 +211,6 @@ public class SongController : MonoBehaviour
         //JingleBells();
 
         float slow = 1.25f;
-        float fast = 1.66667f;
 
         Tutorial(slow);
 
@@ -239,11 +238,11 @@ public class SongController : MonoBehaviour
         newSong.InputNotes(43, 16, 2, 2, 6, 2);
         newSong.InputNotes(46, 16, 4, 2);
 
-        newSong.InputNotes(43, 32, 0, 1, 8, 4);
-        newSong.InputNotes(45, 32, 1, 1, 7, 1);
-        newSong.InputNotes(47, 32, 2, 1, 6, 1);
-        newSong.InputNotes(48, 32, 3, 1, 5, 1);
-        newSong.InputNotes(50, 32, 4, 1);
+        newSong.InputNotes(46, 32, 0, 1, 8, 4);
+        newSong.InputNotes(48, 32, 1, 1, 7, 1);
+        newSong.InputNotes(50, 32, 2, 1, 6, 1);
+        newSong.InputNotes(51, 32, 3, 1, 5, 1);
+        newSong.InputNotes(53, 32, 4, 1);
 
 
         newSong.InputNotes(41, 48, 2, 1);

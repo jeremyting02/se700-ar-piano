@@ -9,7 +9,7 @@ public class Calibration : MonoBehaviour
 
     void Update()
     {
-        if (_leftController.position != _rightController.position)
+        if (_leftController.position != _rightController.position && OVRInput.Get(OVRInput.Button.One))
         {
             transform.position = Vector3.Lerp(_leftController.position, _rightController.position, 0.5f);
             transform.LookAt(_leftController);

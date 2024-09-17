@@ -271,10 +271,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c524e0a2da2374988058ad96b23971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _userId: 0
+  _userId: 1
   _viewPractice: 0
   _songIndex: 0
-  _analysisRange: 020000000300000004000000
+  _analysisRange: 00000000
   _predictionThreshold: 0.5
   _corruptTimeThreshold: 3
   _corruptFocusThreshold: 3
